@@ -78,7 +78,7 @@ road
     position: relative;
     margin: 0 auto;
     overflow: hidden;
-    background: #222;
+    background: #ffffff;
     user-select: none;
     transition: opacity 10s;
 }
@@ -88,7 +88,7 @@ road
 }
 #road * {
     position: absolute;
-    image-rendering: pixelated;
+    /*image-rendering: pixelated;*/
 }
 #hero {
     background-repeat: no-repeat;
@@ -96,10 +96,17 @@ road
     z-index: 2000;
     transform: scale(1.4);
 }
+
 #cloud {
     background-size: auto 100%;
     width: 100%;
     height: 57%;
+}
+
+#buildings {
+    background-size: auto 100%;
+    width: 100%;
+    height: 85%;
 }
 
 /*

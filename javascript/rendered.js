@@ -1,13 +1,8 @@
-// ------------------------------------------------------------
-// assets
-// ------------------------------------------------------------
-
 const ASSETS = {
     COLOR: {
         TAR: ["#959298", "#9c9a9d"],
         RUMBLE: ["#959298", "#f5f2f6"],
-        // GRASS: ["#e4d955", "#b4aa15"],
-        GRASS: ["#e4d955", "#e4d955"],
+        GRASS: ["#eedccd", "#e6d4c5"],
     },
 
     IMAGE: {
@@ -51,21 +46,22 @@ const ASSETS = {
     },
 };
 
-// ------------------------------------------------------------
-// helper functions
-// ------------------------------------------------------------
-
 let game = document.getElementById("game");
+// let buildings = document.getElementById("buildings");
 let hero = document.getElementById("hero");
 let road = document.getElementById("road");
 let cloud = document.getElementById("cloud");
 let time = document.getElementById("time");
 let score = document.getElementById("score");
-let lap = document.getElementById("lap");
+// let lap = document.getElementById("lap");
 let tacho = document.getElementById("tacho");
 let home = document.getElementById("home");
 let highscore = document.getElementById("highscore");
 let text = document.getElementById("text");
+
+// ------------------------------------------------------------
+// helper functions
+// ------------------------------------------------------------
 
 Number.prototype.pad = function (numZeros, char = 0) {
     let n = Math.abs(this);
@@ -189,69 +185,68 @@ class Car {
     }
 }
 
-// class Audio {
-//     constructor() {
-//         this.audioCtx = new AudioContext();
-//
-//         // volume
-//         this.destination = this.audioCtx.createGain();
-//         this.volume = 1;
-//         this.destination.connect(this.audioCtx.destination);
-//
-//         this.files = {};
-//
-//         let _self = this;
-//         this.load(ASSETS.AUDIO.theme, "theme", function (key) {
-//             let source = _self.audioCtx.createBufferSource();
-//             source.buffer = _self.files[key];
-//
-//             let gainNode = _self.audioCtx.createGain();
-//             gainNode.gain.value = 0.6;
-//             source.connect(gainNode);
-//             gainNode.connect(_self.destination);
-//
-//             source.loop = true;
-//             source.start(0);
-//         });
-//     }
-//
-//     get volume() {
-//         return this.destination.gain.value;
-//     }
-//
-//     set volume(level) {
-//         this.destination.gain.value = level;
-//     }
-//
-//     play(key, pitch) {
-//         if (this.files[key]) {
-//             let source = this.audioCtx.createBufferSource();
-//             source.buffer = this.files[key];
-//             source.connect(this.destination);
-//             if (pitch) source.detune.value = pitch;
-//             source.start(0);
-//         } else this.load(key, () => this.play(key));
-//     }
-//
-//     load(src, key, callback) {
-//         let _self = this;
-//         let request = new XMLHttpRequest();
-//         request.open("GET", src, true);
-//         request.responseType = "arraybuffer";
-//         request.onload = function () {
-//             _self.audioCtx.decodeAudioData(
-//                 request.response,
-//                 function (beatportBuffer) {
-//                     _self.files[key] = beatportBuffer;
-//                     callback(key);
-//                 },
-//                 function () {
-//                 }
-//             );
-//         };
-//         request.send();
-//     }
-// }
+class Audio {
+    constructor() {
+        this.audioCtx = new AudioContext();
+
+        // volume
+        this.destination = this.audioCtx.createGain();
+        this.volume = 1;
+        this.destination.connect(this.audioCtx.destination);
+
+        this.files = {};
+
+        let _self = this;
+        this.load(ASSETS.AUDIO.theme, "theme", function (key) {
+            let source = _self.audioCtx.createBufferSource();
+            source.buffer = _self.files[key];
+
+            let gainNode = _self.audioCtx.createGain();
+            gainNode.gain.value = 0.6;
+            source.connect(gainNode);
+            gainNode.connect(_self.destination);
+
+            source.loop = true;
+            source.start(0);
+        });
+    }
+
+    get volume() {
+        return this.destination.gain.value;
+    }
+
+    set volume(level) {
+        this.destination.gain.value = level;
+    }
+
+    play(key, pitch) {
+        if (this.files[key]) {
+            let source = this.audioCtx.createBufferSource();
+            source.buffer = this.files[key];
+            source.connect(this.destination);
+            if (pitch) source.detune.value = pitch;
+            source.start(0);
+        } else this.load(key, () => this.play(key));
+    }
+
+    load(src, key, callback) {
+        let _self = this;
+        let request = new XMLHttpRequest();
+        request.open("GET", src, true);
+        request.responseType = "arraybuffer";
+        request.onload = function () {
+            _self.audioCtx.decodeAudioData(
+                request.response,
+                function (beatportBuffer) {
+                    _self.files[key] = beatportBuffer;
+                    callback(key);
+                },
+                function () {}
+            );
+        };
+        request.send();
+    }
+}
 
 // ------------------------------------------------------------
 // global varriables
@@ -292,8 +287,8 @@ const targetFrameRate = 1000 / 25; // in ms
 let audio;
 
 // game
-let inGame = false;
-let start,
+let inGame = false,
+    start,
     playerX,
     speed,
     scoreVal,
@@ -357,7 +352,7 @@ function genMap() {
         height: (_) => 0,
         special: ASSETS.IMAGE.FINISH,
     });
-    map.push({from: Infinity});
+    map.push({ from: Infinity });
     return map;
 }
 
@@ -368,12 +363,12 @@ let map = genMap();
 // ------------------------------------------------------------
 
 addEventListener(`keyup`, function (e) {
-    // if (e.code === "KeyM") {
-    //     e.preventDefault();
-    //
-    //     audio.volume = audio.volume === 0 ? 1 : 0;
-    //     return;
-    // }
+    if (e.code === "KeyM") {
+        e.preventDefault();
+
+        audio.volume = audio.volume === 0 ? 1 : 0;
+        return;
+    }
 
     if (e.code === 'KeyC') {
         e.preventDefault();
@@ -445,17 +440,16 @@ function update(step) {
 
     playerX = playerX.clamp(-3, 3);
 
+    // Set a constant speed (e.g., 100) for the car
+    const constantSpeed = 50;
+    speed = constantSpeed;
+
     // speed
 
     // if (inGame && KEYS.ArrowUp) speed = accelerate(speed, accel, step);
     // else if (KEYS.ArrowDown) speed = accelerate(speed, breaking, step);
     // else speed = accelerate(speed, decel, step);
-
-    // Set a constant speed (e.g., 100) for the car
-    const constantSpeed = 50;
-    speed = constantSpeed;
-    
-
+    //
     if (Math.abs(playerX) > 0.55 && speed >= maxOffSpeed) {
         speed = accelerate(speed, offDecel, step);
     }
@@ -489,7 +483,7 @@ function update(step) {
         road.style.opacity = 0.4;
         text.innerText = "START GAME";
 
-        highscores.push(lap.innerText);
+        // highscores.push(lap.innerText);
         highscores.sort();
         updateHighscore();
 
@@ -499,10 +493,10 @@ function update(step) {
         score.innerText = (scoreVal | 0).pad(8);
         tacho.innerText = speed | 0;
 
-        let cT = new Date(timestamp() - start);
-        lap.innerText = `${cT.getMinutes()}'${cT.getSeconds().pad(2)}"${cT
-            .getMilliseconds()
-            .pad(3)}`;
+        //let cT = new Date(timestamp() - start);
+        // lap.innerText = `${cT.getMinutes()}'${cT.getSeconds().pad(2)}"${cT
+        //     .getMilliseconds()
+        //     .pad(3)}`;
     }
 
     // sound
@@ -575,9 +569,9 @@ function update(step) {
         maxy = l.Y;
 
         let even = ((n / 2) | 0) % 2;
-        let grass = ASSETS.COLOR.GRASS[even];
-        let rumble = ASSETS.COLOR.RUMBLE[even];
-        let tar = ASSETS.COLOR.TAR[even];
+        let grass = ASSETS.COLOR.GRASS[even * 1];
+        let rumble = ASSETS.COLOR.RUMBLE[even * 1];
+        let tar = ASSETS.COLOR.TAR[even * 1];
 
         let p = lines[(n - 1) % N];
 
@@ -665,7 +659,7 @@ function reset() {
 
     for (let line of lines) line.curve = line.y = 0;
 
-    text.innerText = "START GAME";
+    text.innerText = "INSERT COIN";
     text.classList.add("blink");
 
     road.style.opacity = 0.4;
@@ -757,4 +751,3 @@ function init() {
 }
 
 init();
-//# sourceURL=pen.js=

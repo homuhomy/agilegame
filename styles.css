@@ -155,9 +155,9 @@ h1 {
     left: 50%;
     top: 25%;
     transform: translate(-50%, -50%);
-    font-size: 5em;
+    font-size: 3em;
 
-    background: -webkit-linear-gradient(#25d8b1, #e2bbf0);
+    background: -webkit-linear-gradient(#763f98, #00a19c);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }

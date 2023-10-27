@@ -680,7 +680,7 @@ function reset() {
 
     for (let line of lines) line.curve = line.y = 0;
 
-    text.innerText = "INSERT COIN";
+    text.innerText = "START GAME";
     text.classList.add("blink");
 
     road.style.opacity = 0.4;

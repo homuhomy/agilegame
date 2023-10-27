@@ -6,6 +6,7 @@ const ASSETS = {
     },
 
     IMAGE: {
+
         TREE: {
             src: "images/tree.png",
             width: 132,
@@ -34,6 +35,14 @@ const ASSETS = {
         SKY: {
             src: "images/cloud2.png",
         },
+
+        BUILDINGS: {
+            src: "images/buildings.png",
+        },
+
+        KLCC: {
+            src: "images/klcc.png",
+        },
     },
 
     AUDIO: {
@@ -46,8 +55,15 @@ const ASSETS = {
     },
 };
 
+/*const TREE_IMAGES = [
+    "images/tree1.png",
+    "images/tree2.png",
+    "images/tree3.png",
+];*/
+
 let game = document.getElementById("game");
-// let buildings = document.getElementById("buildings");
+let buildings = document.getElementById("buildings");
+let klcc = document.getElementById("KLCC");
 let hero = document.getElementById("hero");
 let road = document.getElementById("road");
 let cloud = document.getElementById("cloud");
@@ -502,8 +518,13 @@ function update(step) {
     // sound
     if (speed > 0) audio.play("engine", speed * 4);
 
-    // draw cloud
+    // draw cloud to make it move from accordingly
     cloud.style.backgroundPosition = `${
+        (cloudOffset -= lines[startPos].curve * step * speed * 0.13) | 0
+    }px 0`;
+
+    //draw for buildings
+    buildings.style.backgroundPosition = `${
         (cloudOffset -= lines[startPos].curve * step * speed * 0.13) | 0
     }px 0`;
 
@@ -688,6 +709,8 @@ function init() {
     hero.style.height = `${ASSETS.IMAGE.HERO.height}px`;
 
     cloud.style.backgroundImage = `url(${ASSETS.IMAGE.SKY.src})`;
+    buildings.style.backgroundImage = `url(${ASSETS.IMAGE.BUILDINGS.src})`;
+    klcc.style.backgroundImage = `url(${ASSETS.IMAGE.KLCC.src})`;
 
     audio = new Audio();
     Object.keys(ASSETS.AUDIO).forEach((key) =>

@@ -104,9 +104,18 @@ road
 }
 
 #buildings {
-    background-size: auto 100%;
+    background-size: auto 50%;
     width: 100%;
-    height: 85%;
+    height: 160%;
+}
+
+#KLCC {
+    background-size: auto 70%;
+    width: 100%;
+    height: 75%;
+    background-repeat: no-repeat;
+    background-position: center;
+
 }
 
 /*

@@ -215,15 +215,17 @@ class Car {
 
 /* FOR QUIZ */
 class UpgradeItem {
-    constructor(type, lane) {
+    constructor(type, lane, initialPos) {
         this.type = type;
         this.lane = lane;
-        this.pos = 0;  // position along the road
+        this.pos = initialPos;   // position along the road
+        this.hit = false;  // flag to indicate whether the item has been hit
         var element = document.createElement("div");
         road.appendChild(element);
         this.element = element;
     }
 }
+
 
 class Audio {
     constructor() {
@@ -310,6 +312,7 @@ const decel = -40;
 const maxOffSpeed = 40;
 const offDecel = -70;
 const enemy_speed = 8;
+const item_speed = 5;
 const hitSpeed = 20;
 
 const LANE = {
@@ -321,9 +324,9 @@ const LANE = {
 // QUIZ
 // Create instances of UpgradeItem for each lane
 let upgradeItems = [
-    new UpgradeItem('item1', LANE.A),
-    new UpgradeItem('item2', LANE.B),
-    new UpgradeItem('item3', LANE.C)
+    new UpgradeItem('A', LANE.A),
+    new UpgradeItem('B', LANE.B),
+    new UpgradeItem('C', LANE.C)
 ];
 
 const mapLength = 15000;
@@ -583,28 +586,42 @@ function update(step) {
     // PROBLEM WHY THEY KEEP APPEARING TOO CLOSE TO EACH OTHER AAAAA
     let currentTime = timestamp();
     if (currentTime - lastUpgradeTime >= MIN_UPGRADE_INTERVAL) {
+        // Reset the hit flag of all existing UpgradeItem instances
+        for (let item of upgradeItems) {
+            item.hit = false;
+        }
         // Create new UpgradeItem instances
         upgradeItems.push(new UpgradeItem('A', LANE.A));
+        console.log(`Created new UpgradeItem A at position ${upgradeItems[upgradeItems.length - 1].pos}`);
         upgradeItems.push(new UpgradeItem('B', LANE.B));
         upgradeItems.push(new UpgradeItem('C', LANE.C));
+        
+        console.log('last upgrade time: ' + lastUpgradeTime/1000)
+        console.log('time stamp: ' + timestamp())
+        console.log('current time: ' + currentTime/1000)
+        
 
         // Update the lastUpgradeTime
         lastUpgradeTime = currentTime;
     }
 
+
     for (let item of upgradeItems) {
-        item.pos = (item.pos - enemy_speed * step + N) % N;  // update items to be toward the player
+        //enemy_speed = upgradeItems speed
+        item.pos = (item.pos - item_speed * step + N) % N;  // update items to be toward the player
         let l = lines[item.pos | 0];  // find the line the item is on
         l.drawSprite(4000, item.element, {src: `images/flag${item.type}.png`, width: l.W, height: 100}, item.lane);  // draw the item
     }
 
     // For collision detection
     for (let item of upgradeItems) {
-        if ((item.pos | 0) === startPos && isCollide(playerX * 5 + LANE.B, 0.5, item.lane, 0.5)) {
+        if (!item.hit && (item.pos | 0) === startPos && isCollide(playerX * 5 + LANE.B, 0.5, item.lane, 0.5)) {
             console.log(`${item.type} has been chosen`);
+            item.hit = true;  // mark the item as hit
             // Perform other actions as necessary
         }
     }
+
 
     // draw road
     let maxy = height;
@@ -776,10 +793,6 @@ function init() {
     cars.push(new Car(0, ASSETS.IMAGE.CAR, LANE.C));
     cars.push(new Car(10, ASSETS.IMAGE.CAR, LANE.B));
     cars.push(new Car(20, ASSETS.IMAGE.CAR, LANE.C));
-    cars.push(new Car(35, ASSETS.IMAGE.CAR, LANE.C));
-    cars.push(new Car(50, ASSETS.IMAGE.CAR, LANE.A));
-    cars.push(new Car(60, ASSETS.IMAGE.CAR, LANE.B));
-    cars.push(new Car(70, ASSETS.IMAGE.CAR, LANE.A));
 
     for (let i = 0; i < N; i++) {
         var line = new Line();

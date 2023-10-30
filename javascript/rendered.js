@@ -65,12 +65,6 @@ const ASSETS = {
     },
 };
 
-/*const TREE_IMAGES = [
-    "images/tree1.png",
-    "images/tree2.png",
-    "images/tree3.png",
-];*/
-
 let game = document.getElementById("game");
 let buildings = document.getElementById("buildings");
 let klcc = document.getElementById("KLCC");
@@ -331,14 +325,6 @@ const LANE = {
     C: 1.2,
 };
 
-// QUIZ
-// Create instances of UpgradeItem for each lane
-let upgradeItems = [
-    new UpgradeItem('A', LANE.A),
-    new UpgradeItem('B', LANE.B),
-    new UpgradeItem('C', LANE.C)
-];
-
 const mapLength = 15000;
 
 // loop
@@ -348,16 +334,7 @@ const targetFrameRate = 1000 / 25; // in ms
 let audio;
 
 // game
-let inGame = false,
-    start,
-    playerX,
-    speed,
-    scoreVal,
-    pos,
-    cloudOffset,
-    sectionProg,
-    mapIndex,
-    countDown;
+let inGame = false, start, playerX, speed, scoreVal, pos, cloudOffset, sectionProg, mapIndex, countDown;
 let lines = [];
 let cars = [];
 
@@ -559,7 +536,10 @@ let quizQuestions = [
 // ------------------------------------------------------------
 
 let lastUpgradeTime = 0;
-const MIN_UPGRADE_INTERVAL = 10000;
+const MIN_UPGRADE_INTERVAL = 5000;
+// QUIZ
+// Create instances of UpgradeItem for each lane
+let upgradeItems = [];
 let quiz = new Quiz(quizQuestions);
 
 function update(step) {
@@ -680,7 +660,7 @@ function update(step) {
     let currentTime = timestamp();
     let elapsedTime = currentTime - gameStartTime;
     
-    if (elapsedTime >= 10000 && currentTime - lastUpgradeTime >= MIN_UPGRADE_INTERVAL) {
+    if (elapsedTime >= 5000 && currentTime - lastUpgradeTime >= MIN_UPGRADE_INTERVAL) {
         // Reset the hit flag of all existing UpgradeItem instances
         for (let item of upgradeItems) {
             item.hit = false;

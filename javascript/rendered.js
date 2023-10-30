@@ -43,6 +43,16 @@ const ASSETS = {
         KLCC: {
             src: "images/klcc.png",
         },
+
+        FLAG_A: {
+            src: "images/flagA.png"
+        },
+        FLAG_B: {
+            src: "images/flagB.png"
+        },
+        FLAG_C: {
+            src: "images/flagC.png"
+        },
     },
 
     AUDIO: {
@@ -203,6 +213,18 @@ class Car {
     }
 }
 
+/* FOR QUIZ */
+class UpgradeItem {
+    constructor(type, lane) {
+        this.type = type;
+        this.lane = lane;
+        this.pos = 0;  // position along the road
+        var element = document.createElement("div");
+        road.appendChild(element);
+        this.element = element;
+    }
+}
+
 class Audio {
     constructor() {
         this.audioCtx = new AudioContext();
@@ -295,6 +317,14 @@ const LANE = {
     B: -0.5,
     C: 1.2,
 };
+
+// QUIZ
+// Create instances of UpgradeItem for each lane
+let upgradeItems = [
+    new UpgradeItem('item1', LANE.A),
+    new UpgradeItem('item2', LANE.B),
+    new UpgradeItem('item3', LANE.C)
+];
 
 const mapLength = 15000;
 
@@ -433,6 +463,9 @@ addEventListener(`keyup`, function (e) {
 // game loop
 // ------------------------------------------------------------
 
+let lastUpgradeTime = 0;
+const MIN_UPGRADE_INTERVAL = 10000;
+
 function update(step) {
     // prepare this iteration
     pos += speed;
@@ -543,6 +576,33 @@ function update(step) {
         ) {
             speed = Math.min(hitSpeed, speed);
             if (inGame) audio.play("honk");
+        }
+    }
+
+    //QUIZ
+    // PROBLEM WHY THEY KEEP APPEARING TOO CLOSE TO EACH OTHER AAAAA
+    let currentTime = timestamp();
+    if (currentTime - lastUpgradeTime >= MIN_UPGRADE_INTERVAL) {
+        // Create new UpgradeItem instances
+        upgradeItems.push(new UpgradeItem('A', LANE.A));
+        upgradeItems.push(new UpgradeItem('B', LANE.B));
+        upgradeItems.push(new UpgradeItem('C', LANE.C));
+
+        // Update the lastUpgradeTime
+        lastUpgradeTime = currentTime;
+    }
+
+    for (let item of upgradeItems) {
+        item.pos = (item.pos - enemy_speed * step + N) % N;  // update items to be toward the player
+        let l = lines[item.pos | 0];  // find the line the item is on
+        l.drawSprite(4000, item.element, {src: `images/flag${item.type}.png`, width: l.W, height: 100}, item.lane);  // draw the item
+    }
+
+    // For collision detection
+    for (let item of upgradeItems) {
+        if ((item.pos | 0) === startPos && isCollide(playerX * 5 + LANE.B, 0.5, item.lane, 0.5)) {
+            console.log(`${item.type} has been chosen`);
+            // Perform other actions as necessary
         }
     }
 

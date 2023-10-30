@@ -75,6 +75,7 @@ let home = document.getElementById("home");
 let highscore = document.getElementById("highscore");
 let text = document.getElementById("text");
 
+
 // ------------------------------------------------------------
 // helper functions
 // ------------------------------------------------------------
@@ -140,6 +141,7 @@ function sleep(ms) {
 // ------------------------------------------------------------
 // objects
 // ------------------------------------------------------------
+
 
 class Line {
     constructor() {
@@ -460,12 +462,6 @@ function update(step) {
     const constantSpeed = 50;
     speed = constantSpeed;
 
-    // speed
-
-    // if (inGame && KEYS.ArrowUp) speed = accelerate(speed, accel, step);
-    // else if (KEYS.ArrowDown) speed = accelerate(speed, breaking, step);
-    // else speed = accelerate(speed, decel, step);
-    //
     if (Math.abs(playerX) > 0.55 && speed >= maxOffSpeed) {
         speed = accelerate(speed, offDecel, step);
     }
@@ -745,19 +741,6 @@ function init() {
     updateHighscore();
 
     reset();
-
-    // START GAME LOOP
-    // (function loop() {
-    //     requestAnimationFrame(loop);
-    //
-    //     let now = timestamp();
-    //     let delta = now - then;
-    //
-    //     if (delta > targetFrameRate) {
-    //         then = now - (delta % targetFrameRate);
-    //         update(delta / 1000);
-    //     }
-    // })();
 
     // Modify the game loop to update the game state only when inGame is true
     (function loop() {

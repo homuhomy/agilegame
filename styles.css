@@ -203,4 +203,32 @@ Guide
     display: inline-block;
 }
 
+/* FOR QUIZ */
+#quizBox {
+    position: absolute;
+    left: 50%;
+    top: 25%;
+    transform: translate(-50%, -50%);
+
+    width: 700px;
+    word-wrap: break-word;
+}
+
+#questionBox, #optionsBox {
+    background-color: #fff;
+    margin: 0 auto;
+    padding: 10px;
+    border: 1px solid #000;
+    width: 50%;
+}
+
+/*
+#optionsBox button {
+    display: block;
+    margin: 5px auto;
+    padding: 5px 10px;
+}
+*/
+
+
 

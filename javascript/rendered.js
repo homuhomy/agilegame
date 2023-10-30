@@ -85,7 +85,6 @@ let home = document.getElementById("home");
 let highscore = document.getElementById("highscore");
 let text = document.getElementById("text");
 
-
 // ------------------------------------------------------------
 // helper functions
 // ------------------------------------------------------------
@@ -214,6 +213,8 @@ class Car {
 }
 
 /* FOR QUIZ */
+let canStartQuiz = false;  // This flag is initially set to false
+
 class UpgradeItem {
     constructor(type, lane, initialPos) {
         this.type = type;
@@ -223,6 +224,15 @@ class UpgradeItem {
         var element = document.createElement("div");
         road.appendChild(element);
         this.element = element;
+    }
+
+    setHit() {
+        this.hit = true;
+        quiz.currentQuestionIndex++;
+        canStartQuiz = true;  // Set the canStartQuiz flag to true when a flag is hit
+        if (quiz.currentQuestionIndex < quiz.questions.length) {
+            quiz.displayQuestion();
+        }
     }
 }
 
@@ -359,7 +369,7 @@ function getFun(val) {
     return (i) => val;
 }
 
-function genMap() {
+/*function genMap() {
     let map = [];
 
     for (var i = 0; i < mapLength; i += getRand(0, 50)) {
@@ -405,7 +415,36 @@ function genMap() {
     });
     map.push({ from: Infinity });
     return map;
+}*/
+
+function genMap() {
+    let map = [];
+
+    for (var i = 0; i < mapLength; i += getRand(0, 50)) {
+        let randHeight = getRand(-5, 5);
+        let randInterval = getRand(20, 40);
+
+        let section = {
+            from: i,
+            to: (i = i + getRand(300, 600)),
+            curve: (_) => 0,  // Set curve to 0 to make the road straight
+            height: Math.random() > 0.8 ? (i) => Math.sin(i / randInterval) * 1000 : (_) => randHeight  // Keep the random height logic
+        };
+
+        map.push(section);
+    }
+
+    map.push({
+        from: i,
+        to: i + N,
+        curve: (_) => 0,  // Set curve to 0 to make the road straight
+        height: (_) => 0,  // Set height to 0 for the finish line section
+        special: ASSETS.IMAGE.FINISH,
+    });
+    map.push({ from: Infinity });
+    return map;
 }
+
 
 let map = genMap();
 
@@ -413,17 +452,16 @@ let map = genMap();
 // additional controls
 // ------------------------------------------------------------
 
-addEventListener(`keyup`, function (e) {
+let gameStartTime = null;
+addEventListener('keyup', function (e) {
     if (e.code === "KeyM") {
         e.preventDefault();
-
         audio.volume = audio.volume === 0 ? 1 : 0;
         return;
     }
 
     if (e.code === 'KeyC') {
         e.preventDefault();
-
         if (!inGame) {
             sleep(0)
                 .then((_) => {
@@ -439,28 +477,82 @@ addEventListener(`keyup`, function (e) {
                 })
                 .then((_) => {
                     reset();
-
                     home.style.display = 'none';
-
                     road.style.opacity = 1;
                     hero.style.display = 'block';
                     hud.style.display = 'block';
-
                     audio.play('beep', 500);
-
                     inGame = true; // Start the game
+                    quiz.displayQuestion()
+                    gameStartTime = timestamp();  // Store the game start timestamp
                 });
         }
-
         return;
     }
 
     if (e.code === "Escape") {
         e.preventDefault();
-
         reset();
     }
 });
+
+/// QUIZ QUESTIONS SECTION
+
+class Quiz {
+    constructor(questions) {
+        this.questions = questions;
+        this.currentQuestionIndex = 0;
+        this.quizBox = document.getElementById('quizBox');  // Update this line
+        this.questionBox = document.getElementById('questionBox');  // Update this line
+        this.optionsBox = document.getElementById('optionsBox');  // Update this line
+        document.getElementById('game').appendChild(this.quizBox);
+        this.displayQuestion();
+    }
+
+    displayQuestion() {
+        let currentQuestion = this.questions[this.currentQuestionIndex];
+        this.questionBox.innerText = currentQuestion.question;
+        this.optionsBox.innerHTML = '';
+        for (let i = 0; i < currentQuestion.options.length; i++) {
+            let optionButton = document.createElement('button');
+            optionButton.innerText = currentQuestion.options[i];
+            optionButton.addEventListener('click', () => this.checkAnswer(i));
+            this.optionsBox.appendChild(optionButton);
+        }
+    }
+
+    checkAnswer(index) {
+        let currentQuestion = this.questions[this.currentQuestionIndex];
+        if (index === currentQuestion.correctAnswer) {
+            console.log('Correct Answer!');
+        } else {
+            console.log('Wrong Answer!');
+        }
+        this.currentQuestionIndex++;
+        if (this.currentQuestionIndex < this.questions.length) {
+            this.displayQuestion();
+        }
+    }
+}
+
+// QUESTIONS LIST
+let quizQuestions = [
+    {
+        question: 'How many agile adventures we have released so far?',
+        options: ['A: 12', 'B: 14', 'C: 15'],
+        correctAnswer: 0
+    },
+    {
+        question: 'Which company practices "Freedom & Trust" in 8 trends?',
+        options: ['A: Nucor', 'B: Haier', 'C: Spotify'],
+        correctAnswer: 2
+    },
+    {
+        question: 'Is Malaysia?',
+        options: ['A: Yes', 'B: No', 'C: Maybe'],
+        correctAnswer: 2
+    }
+];
 
 // ------------------------------------------------------------
 // game loop
@@ -468,6 +560,7 @@ addEventListener(`keyup`, function (e) {
 
 let lastUpgradeTime = 0;
 const MIN_UPGRADE_INTERVAL = 10000;
+let quiz = new Quiz(quizQuestions);
 
 function update(step) {
     // prepare this iteration
@@ -485,7 +578,7 @@ function update(step) {
     playerX -= (lines[startPos].curve / 5000) * step * speed;
 
     if (KEYS.ArrowRight)
-        (hero.style.backgroundPosition = "-220px 0"),
+        (hero.style.backgroundPosition = "-220px 0"), //for the image/frame selection
             (playerX += 0.007 * step * speed);
     else if (KEYS.ArrowLeft)
         (hero.style.backgroundPosition = "0 0"),
@@ -583,16 +676,17 @@ function update(step) {
     }
 
     //QUIZ
-    // PROBLEM WHY THEY KEEP APPEARING TOO CLOSE TO EACH OTHER AAAAA
+
     let currentTime = timestamp();
-    if (currentTime - lastUpgradeTime >= MIN_UPGRADE_INTERVAL) {
+    let elapsedTime = currentTime - gameStartTime;
+    
+    if (elapsedTime >= 10000 && currentTime - lastUpgradeTime >= MIN_UPGRADE_INTERVAL) {
         // Reset the hit flag of all existing UpgradeItem instances
         for (let item of upgradeItems) {
             item.hit = false;
         }
         // Create new UpgradeItem instances
         upgradeItems.push(new UpgradeItem('A', LANE.A));
-        console.log(`Created new UpgradeItem A at position ${upgradeItems[upgradeItems.length - 1].pos}`);
         upgradeItems.push(new UpgradeItem('B', LANE.B));
         upgradeItems.push(new UpgradeItem('C', LANE.C));
         
@@ -600,7 +694,6 @@ function update(step) {
         console.log('time stamp: ' + timestamp())
         console.log('current time: ' + currentTime/1000)
         
-
         // Update the lastUpgradeTime
         lastUpgradeTime = currentTime;
     }
@@ -610,13 +703,17 @@ function update(step) {
         //enemy_speed = upgradeItems speed
         item.pos = (item.pos - item_speed * step + N) % N;  // update items to be toward the player
         let l = lines[item.pos | 0];  // find the line the item is on
-        l.drawSprite(4000, item.element, {src: `images/flag${item.type}.png`, width: l.W, height: 100}, item.lane);  // draw the item
+        // Calculate the width based on the lane width, and cap it at 100
+        let calculatedWidth = l.W;
+        let cappedWidth = Math.min(calculatedWidth, 100);  // This will ensure the width never exceeds 100
+        l.drawSprite(4000, item.element, {src: `images/flag${item.type}.png`, width: cappedWidth, height: 100}, item.lane);  // draw the item
     }
 
     // For collision detection
     for (let item of upgradeItems) {
         if (!item.hit && (item.pos | 0) === startPos && isCollide(playerX * 5 + LANE.B, 0.5, item.lane, 0.5)) {
             console.log(`${item.type} has been chosen`);
+            item.setHit();
             item.hit = true;  // mark the item as hit
             // Perform other actions as necessary
         }
@@ -790,9 +887,9 @@ function init() {
         audio.load(ASSETS.AUDIO[key], key, (_) => 0)
     );
 
-    cars.push(new Car(0, ASSETS.IMAGE.CAR, LANE.C));
+    /*cars.push(new Car(0, ASSETS.IMAGE.CAR, LANE.C));
     cars.push(new Car(10, ASSETS.IMAGE.CAR, LANE.B));
-    cars.push(new Car(20, ASSETS.IMAGE.CAR, LANE.C));
+    cars.push(new Car(20, ASSETS.IMAGE.CAR, LANE.C));*/
 
     for (let i = 0; i < N; i++) {
         var line = new Line();

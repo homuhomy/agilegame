@@ -92,9 +92,9 @@ road
 }
 #hero {
     background-repeat: no-repeat;
-    background-position: -110px 0;
-    z-index: 4000;
-    transform: scale(1.4);
+    background-position: -580px 20px;
+    z-index: 8000;
+    transform: scale(0.3);
 }
 
 #cloud {

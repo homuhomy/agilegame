@@ -14,9 +14,9 @@ const ASSETS = {
         },
 
         HERO: {
-            src: "images/hero.png",
-            width: 110,
-            height: 56,
+            src: "images/female.png",
+            width: 580,
+            height: 688,
         },
 
         CAR: {
@@ -194,30 +194,22 @@ class Line {
     }
 }
 
-class Car {
-    constructor(pos, type, lane) {
-        this.pos = pos;
-        this.type = type;
-        this.lane = lane;
-
-        var element = document.createElement("div");
-        road.appendChild(element);
-        this.element = element;
-    }
-}
-
 /* FOR QUIZ */
 let canStartQuiz = false;  // This flag is initially set to false
 
 class UpgradeItem {
-    constructor(type, lane, initialPos) {
+    constructor(type, lane, pos) {
         this.type = type;
         this.lane = lane;
-        this.pos = initialPos;   // position along the road
+        this.pos = pos;   // position along the road
         this.hit = false;  // flag to indicate whether the item has been hit
         var element = document.createElement("div");
         road.appendChild(element);
         this.element = element;
+    }
+
+    setSpeed(newSpeed) {
+        item_speed = newSpeed;  // Assuming item_speed is a global variable
     }
 
     setHit() {
@@ -228,6 +220,8 @@ class UpgradeItem {
             quiz.displayQuestion();
         }
     }
+
+
 }
 
 
@@ -316,7 +310,7 @@ const decel = -40;
 const maxOffSpeed = 40;
 const offDecel = -70;
 const enemy_speed = 8;
-const item_speed = 5;
+let item_speed = 2;
 const hitSpeed = 20;
 
 const LANE = {
@@ -336,7 +330,7 @@ let audio;
 // game
 let inGame = false, start, playerX, speed, scoreVal, pos, cloudOffset, sectionProg, mapIndex, countDown;
 let lines = [];
-let cars = [];
+let newSpeed = 1;
 
 // ------------------------------------------------------------
 // map
@@ -345,54 +339,6 @@ let cars = [];
 function getFun(val) {
     return (i) => val;
 }
-
-/*function genMap() {
-    let map = [];
-
-    for (var i = 0; i < mapLength; i += getRand(0, 50)) {
-        let section = {
-            from: i,
-            to: (i = i + getRand(300, 600)),
-        };
-
-        let randHeight = getRand(-5, 5);
-        let randCurve = getRand(5, 30) * (Math.random() >= 0.5 ? 1 : -1);
-        let randInterval = getRand(20, 40);
-
-        if (Math.random() > 0.9)
-            Object.assign(section, {
-                curve: (_) => randCurve,
-                height: (_) => randHeight,
-            });
-        else if (Math.random() > 0.8)
-            Object.assign(section, {
-                curve: (_) => 0,
-                height: (i) => Math.sin(i / randInterval) * 1000,
-            });
-        else if (Math.random() > 0.8)
-            Object.assign(section, {
-                curve: (_) => 0,
-                height: (_) => randHeight,
-            });
-        else
-            Object.assign(section, {
-                curve: (_) => randCurve,
-                height: (_) => 0,
-            });
-
-        map.push(section);
-    }
-
-    map.push({
-        from: i,
-        to: i + N,
-        curve: (_) => 0,
-        height: (_) => 0,
-        special: ASSETS.IMAGE.FINISH,
-    });
-    map.push({ from: Infinity });
-    return map;
-}*/
 
 function genMap() {
     let map = [];
@@ -510,23 +456,61 @@ class Quiz {
             this.displayQuestion();
         }
     }
+    
 }
 
 // QUESTIONS LIST
+//check which question appear and which arent
 let quizQuestions = [
     {
-        question: 'How many agile adventures we have released so far?',
+        question: 'Q1: What are Agile Enterprise’s focus area. Hint : About AE',
+        options: ['A: Shape Leadership, Mindset & Culture', 'B: SOME WRONG ANSWER', 'C: SOME WRONG ANSWER'],
+        correctAnswer: 0
+    },
+    {
+        question: 'Q2: What are Agile Enterprise’s focus area. Hint : About AE',
+        options: ['A: SOME WRONG ANSWER', 'B: Strengthen Agile teams & Capability ', 'C: SOME WRONG ANSWER'],
+        correctAnswer: 1
+    },
+    {
+        question: 'Q3: What are some examples of Being Agile? Hint : Agile in PETRONAS',
+        options: ['A: Get frequent customer feedback ', 'B: deliver in increments ', 'C: Use mistakes as learning opportunities'],
+        correctAnswer: 2
+    },
+    {
+        question: 'Q4: What are some examples of Being Agile? Hint : Agile in PETRONAS',
+        options: ['A: value progress over perfection ', 'B: quickly pivot and make changes', 'C: WRONG ANSWER'],
+        correctAnswer: 0
+    },
+    {
+        question: 'Q5: Name the one of the four Agile values. Hint : Agile in PETRONAS ',
+        options: ['A: maintain simplicity ', 'B: customer collaboration ', 'C: trust and support'],
+        correctAnswer: 1
+    },
+    {
+        question: 'Q6: Name another one of the four Agile values. Hint : Agile in PETRONAS ',
+        options: ['A: individuals and interactions ', 'B: self organising-team', 'C: face to face conversation '],
+        correctAnswer: 1
+    },
+    {
+        question: 'Q7: How many agile adventures we have released so far?\n' +
+            'Hint: Media library ',
         options: ['A: 12', 'B: 14', 'C: 15'],
         correctAnswer: 0
     },
     {
-        question: 'Which company practices "Freedom & Trust" in 8 trends?',
-        options: ['A: Nucor', 'B: Haier', 'C: Spotify'],
-        correctAnswer: 2
+        question: 'Q8: Name one of the 3 handbooks we have published under Agile Wow Handbook series. Hint : What we offer',
+        options: ['A: 8 trends of progressive organisations handbook', 'B: WRONG ANSWER', 'C: WRONG ANSWER'],
+        correctAnswer: 0
     },
     {
-        question: 'Is Malaysia?',
-        options: ['A: Yes', 'B: No', 'C: Maybe'],
+        question: 'Q9: Name another one of the 3 handbooks we have published under Agile Wow Handbook series. Hint : What we offer',
+        options: ['A: WRONG ANSWER', 'B: WRONG ANSWER', 'C: Progressive organisations handbook\n'],
+        correctAnswer: 0
+    },
+    {
+        question: 'Q10: Which company practices "Freedom & Trust" in 8 trends?',
+        options: ['A: Nucor', 'B: Haier', 'C: Spotify'],
         correctAnswer: 2
     }
 ];
@@ -541,6 +525,12 @@ const MIN_UPGRADE_INTERVAL = 5000;
 // Create instances of UpgradeItem for each lane
 let upgradeItems = [];
 let quiz = new Quiz(quizQuestions);
+let posIncrement = 10;  // Initial gap increment
+let lastUpgradePos = 0;  // Last position where flags were placed
+const MIN_GAP = 20;
+let currentTime = timestamp();
+let elapsedTime = currentTime - gameStartTime;
+
 
 function update(step) {
     // prepare this iteration
@@ -551,19 +541,20 @@ function update(step) {
     var startPos = (pos / segL) | 0;
     let endPos = (startPos + N - 1) % N;
 
-    scoreVal += speed * step;
+    /*scoreVal += speed * step;*/
     countDown -= step;
 
     // left / right position
     playerX -= (lines[startPos].curve / 5000) * step * speed;
 
+    //for the image/frame selection
     if (KEYS.ArrowRight)
-        (hero.style.backgroundPosition = "-220px 0"), //for the image/frame selection
+        (hero.style.backgroundPosition = "-1160px 0"),
             (playerX += 0.007 * step * speed);
     else if (KEYS.ArrowLeft)
         (hero.style.backgroundPosition = "0 0"),
             (playerX -= 0.007 * step * speed);
-    else hero.style.backgroundPosition = "-110px 0";
+    else hero.style.backgroundPosition = "-580px 0";
 
     playerX = playerX.clamp(-3, 3);
 
@@ -624,60 +615,53 @@ function update(step) {
     if (speed > 0) audio.play("engine", speed * 4);
 
     // draw cloud to make it move from accordingly
-    cloud.style.backgroundPosition = `${
+    /*cloud.style.backgroundPosition = `${
         (cloudOffset -= lines[startPos].curve * step * speed * 0.13) | 0
-    }px 0`;
+    }px 0`;*/
 
     //draw for buildings
-    buildings.style.backgroundPosition = `${
+   /* buildings.style.backgroundPosition = `${
         (cloudOffset -= lines[startPos].curve * step * speed * 0.13) | 0
-    }px 0`;
-
-    // other cars
-    for (let car of cars) {
-        car.pos = (car.pos + enemy_speed * step) % N;
-
-        // respawn
-        if ((car.pos | 0) === endPos) {
-            if (speed < 30) car.pos = startPos;
-            else car.pos = endPos - 2;
-            car.lane = randomProperty(LANE);
-        }
-
-        // collision
-        const offsetRatio = 5;
-        if (
-            (car.pos | 0) === startPos &&
-            isCollide(playerX * offsetRatio + LANE.B, 0.5, car.lane, 0.5)
-        ) {
-            speed = Math.min(hitSpeed, speed);
-            if (inGame) audio.play("honk");
-        }
-    }
+    }px 0`;*/
 
     //QUIZ
 
-    let currentTime = timestamp();
-    let elapsedTime = currentTime - gameStartTime;
-    
-    if (elapsedTime >= 5000 && currentTime - lastUpgradeTime >= MIN_UPGRADE_INTERVAL) {
+    currentTime = timestamp();
+    elapsedTime = currentTime - gameStartTime;
+
+    if (elapsedTime >= 10000 && currentTime - lastUpgradeTime >= MIN_UPGRADE_INTERVAL) {
         // Reset the hit flag of all existing UpgradeItem instances
         for (let item of upgradeItems) {
             item.hit = false;
         }
-        // Create new UpgradeItem instances
-        upgradeItems.push(new UpgradeItem('A', LANE.A));
-        upgradeItems.push(new UpgradeItem('B', LANE.B));
-        upgradeItems.push(new UpgradeItem('C', LANE.C));
-        
-        console.log('last upgrade time: ' + lastUpgradeTime/1000)
-        console.log('time stamp: ' + timestamp())
-        console.log('current time: ' + currentTime/1000)
-        
-        // Update the lastUpgradeTime
-        lastUpgradeTime = currentTime;
+
+        // Check the gap to the last set of flags
+        let gap = pos - lastUpgradePos;
+        if (gap >= MIN_GAP || gap < 0) {  // The gap can be negative if pos has wrapped around
+            // Create new UpgradeItem instances
+            upgradeItems.push(new UpgradeItem('A', LANE.A, pos));
+            upgradeItems.push(new UpgradeItem('B', LANE.B, pos));
+            upgradeItems.push(new UpgradeItem('C', LANE.C, pos));
+            lastUpgradeTime = currentTime;
+            lastUpgradePos = pos;  // Update the position of the last set of flags
+        }
     }
 
+
+    // Assuming 'currentQuestion' is the current question object from your quizQuestions array
+    let currentQuestion = quiz.questions[quiz.currentQuestionIndex];
+
+    // Method to get the correct flag based on the answer
+    function getCorrectFlag() {
+        switch (currentQuestion.correctAnswer) {
+            case 0: return 'A';
+            case 1: return 'B';
+            case 2: return 'C';
+            default: throw new Error('Invalid correct answer index');
+        }
+    }
+
+    
 
     for (let item of upgradeItems) {
         //enemy_speed = upgradeItems speed
@@ -686,16 +670,24 @@ function update(step) {
         // Calculate the width based on the lane width, and cap it at 100
         let calculatedWidth = l.W;
         let cappedWidth = Math.min(calculatedWidth, 100);  // This will ensure the width never exceeds 100
-        l.drawSprite(4000, item.element, {src: `images/flag${item.type}.png`, width: cappedWidth, height: 100}, item.lane);  // draw the item
+        l.drawSprite(4000, item.element, {src: `images/flag${item.type}.png`, width: cappedWidth, height: 100}, item.lane);
     }
 
-    // For collision detection
+    // Your collision detection logic
     for (let item of upgradeItems) {
         if (!item.hit && (item.pos | 0) === startPos && isCollide(playerX * 5 + LANE.B, 0.5, item.lane, 0.5)) {
             console.log(`${item.type} has been chosen`);
             item.setHit();
             item.hit = true;  // mark the item as hit
-            // Perform other actions as necessary
+
+            // Check if the hit item is the correct flag for the current question
+            if (item.type === getCorrectFlag()) {
+                console.log('Correct Answer!');
+                // Progress to the next question or level
+            } else {
+                console.log('Wrong Answer!');
+                // Provide feedback or handle incorrect answer
+            }
         }
     }
 
@@ -730,9 +722,9 @@ function update(step) {
         if (l.special)
             l.drawSprite(level, 0, l.special, l.special.offset || 0);
 
-        for (let car of cars)
+        /*for (let car of cars)
             if ((car.pos | 0) === n % N)
-                l.drawSprite(level, car.element, car.type, car.lane);
+                l.drawSprite(level, car.element, car.type, car.lane);*/
 
         // update road
 
@@ -852,7 +844,8 @@ function init() {
     game.style.width = width + "px";
     game.style.height = height + "px";
 
-    hero.style.top = height - 80 + "px";
+    /*hero.style.top = height - 80 + "px";*/
+    hero.style.top = (height - ASSETS.IMAGE.HERO.height + 220) + "px";
     hero.style.left = halfWidth - ASSETS.IMAGE.HERO.width / 2 + "px";
     hero.style.background = `url(${ASSETS.IMAGE.HERO.src})`;
     hero.style.width = `${ASSETS.IMAGE.HERO.width}px`;
@@ -866,10 +859,6 @@ function init() {
     Object.keys(ASSETS.AUDIO).forEach((key) =>
         audio.load(ASSETS.AUDIO[key], key, (_) => 0)
     );
-
-    /*cars.push(new Car(0, ASSETS.IMAGE.CAR, LANE.C));
-    cars.push(new Car(10, ASSETS.IMAGE.CAR, LANE.B));
-    cars.push(new Car(20, ASSETS.IMAGE.CAR, LANE.C));*/
 
     for (let i = 0; i < N; i++) {
         var line = new Line();
@@ -903,6 +892,8 @@ function init() {
             then = now - (delta % targetFrameRate);
             update(delta / 1000);
         }
+        
+        
     })();
 }
 

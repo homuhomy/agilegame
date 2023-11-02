@@ -19,7 +19,7 @@ const ASSETS = {
         },
 
         HERO: {
-            src: "images/female.png",
+            src: "images/male.png",
             width: 580,
             height: 688,
         },
@@ -85,7 +85,22 @@ let text = document.getElementById("text");
 // Get character selection elements by their IDs
 const femaleCharacter = document.getElementById("female-character");
 const maleCharacter = document.getElementById("male-character");
-const characterSelection = document.getElementById("characterSelection"); // Add this line
+const characterSelection = document.getElementById("characterSelection");
+
+// Add event listeners to character selection elements
+femaleCharacter.addEventListener('click', () => updateCharacter('female'));
+maleCharacter.addEventListener('click', () => updateCharacter('male'));
+
+function updateCharacter(gender) {
+    if (gender === 'female') {
+        ASSETS.IMAGE.HERO.src = 'images/female.png';
+    } else if (gender === 'male') {
+        ASSETS.IMAGE.HERO.src = 'images/male.png';
+    }
+    // Update the hero element's background image
+    hero.style.background = `url(${ASSETS.IMAGE.HERO.src})`;
+}
+
 
 // ------------------------------------------------------------
 // helper functions
@@ -176,8 +191,19 @@ function loseLife() {
         updateLivesDisplay();
         if (lives === 0) {
             console.log("game over")
+            inGame = false;  // End the game
             
-            // Handle game over scenario
+
+            // Display the score
+            road.style.opacity = 0.4;
+            hud.style.display = "none";
+            home.style.display = "block";
+            text.classList.remove('blink');
+            updateDisplay();
+            text.innerText = `Game Over!\n Your Score: ${scoreVal}`;
+
+            // Optionally, you can also hide the quiz UI
+            quiz.quizBox.style.display = 'none';
         }
     }
 }
@@ -344,6 +370,33 @@ function genMap() {
 
 let map = genMap();
 
+function updateDisplay() {
+    // Get references to the HTML elements
+    const title = document.querySelector('#home h1');
+    const charSelection = document.getElementById('character-selection');
+    const gameOverText = document.getElementById('text');
+
+    // If the game is over
+    if (!inGame) {
+        // Hide the title and character selection
+        title.style.display = 'none';
+        charSelection.style.display = 'none';
+
+        // Show the game over text
+        gameOverText.innerText = `Game Over! Your score: ${scoreVal}`;
+        gameOverText.style.display = 'block';
+    }
+    // If the game is not over
+    else {
+        // Show the title and character selection
+        title.style.display = 'block';
+        charSelection.style.display = 'block';
+
+        // Hide the game over text
+        gameOverText.style.display = 'none';
+    }
+}
+
 // ------------------------------------------------------------
 // additional controls
 // ------------------------------------------------------------
@@ -379,6 +432,7 @@ addEventListener('keyup', function (e) {
                     hud.style.display = 'block';
                     audio.play('beep', 500);
                     inGame = true; // Start the game
+                    quiz.quizBox.style.display = 'block';
                     quiz.displayQuestion()
                     gameStartTime = timestamp();  // Store the game start timestamp
                 });
@@ -402,6 +456,7 @@ class Quiz {
         this.questionBox = document.getElementById('questionBox');  // Update this line
         this.optionsBox = document.getElementById('optionsBox');  // Update this line
         document.getElementById('game').appendChild(this.quizBox);
+        this.quizBox.style.display = 'none';
         this.displayQuestion();
     }
 
@@ -442,7 +497,7 @@ class Quiz {
 
 // QUESTIONS LIST
 //check which question appear and which arent
-let quizQuestions = [
+let quizQuestions =  [
     {
         question: 'Q1: What are Agile Enterprise’s focus area. Hint : About AE',
         options: ['A: Shape Leadership, Mindset & Culture', 'B: SOME WRONG ANSWER', 'C: SOME WRONG ANSWER'],
@@ -667,6 +722,7 @@ function update(step) {
                 inGame = false;  // End the game
 
                 // Display the score
+                updateDisplay();
                 road.style.opacity = 0.4;
                 hud.style.display = "none";
                 home.style.display = "block";
@@ -678,8 +734,7 @@ function update(step) {
             }
         }
     }
-
-
+    
     // draw road
     let maxy = height;
     let camH = H + lines[startPos].y;
@@ -794,7 +849,9 @@ function update(step) {
 // ------------------------------------------------------------
 
 function reset() {
+    
     inGame = false;
+    // updateDisplay();
 
     start = timestamp();
     countDown = map[map.length - 2].to / 130 + 10;

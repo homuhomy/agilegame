@@ -1,4 +1,4 @@
-// export default class Line {
+// export class Line {
 //     constructor() {
 //         this.x = 0;
 //         this.y = 0;

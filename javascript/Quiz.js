@@ -1,4 +1,4 @@
-// export default class Quiz {
+// export class Quiz {
 //     constructor(questions) {
 //         this.questions = questions;
 //         this.currentQuestionIndex = 0;

@@ -146,6 +146,17 @@ home
     z-index: 1000; /* need this cause clip-path changes stack context */
 }
 
+#character-selection {
+    z-index: 9999;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    color: black;
+
+    font-size: 0.5em;
+}
+
 #highscore {
     position: absolute;
     width: 100%;
@@ -163,7 +174,7 @@ home
 h1 {
     position: absolute;
     left: 50%;
-    top: 25%;
+    top: 20%;
     transform: translate(-50%, -50%);
     font-size: 3em;
 
@@ -176,7 +187,7 @@ h1 {
     text-align: center;
     position: absolute;
     left: 50%;
-    top: 50%;
+    top: 80%;
     transform: translate(-50%, -50%);
     font-size: 1.5em;
     color: #fdb924;
@@ -218,7 +229,7 @@ Guide
 #quizBox {
     position: absolute;
     left: 50%;
-    top: 25%;
+    top: 30%;
     transform: translate(-50%, -50%);
 
     width: 700px;
@@ -232,17 +243,4 @@ Guide
     border: 1px solid #000;
     width: 50%;
 }
-
-#character-selection {
-
-}
-
-
-/*
-#optionsBox button {
-    display: block;
-    margin: 5px auto;
-    padding: 5px 10px;
-}
-*/
 

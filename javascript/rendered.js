@@ -6,6 +6,11 @@ const ASSETS = {
     },
 
     IMAGE: {
+        HEART: {
+            src: "images/heart.png",
+            width: 118,
+            height: 102,
+        },
 
         TREE: {
             src: "images/tree.png",
@@ -144,6 +149,35 @@ function sleep(ms) {
 // ------------------------------------------------------------
 // objects
 // ------------------------------------------------------------
+
+// Global variable for lives
+let lives = 3;
+
+function updateLivesDisplay() {
+    // Clear current hearts
+    document.getElementById('lives').innerHTML = '';
+    // Add back the correct number of hearts
+    for (let i = 0; i < lives; i++) {
+        let heartImg = document.createElement('img');
+        heartImg.src = 'images/heart.png';
+        heartImg.classList.add('heart');
+        document.getElementById('lives').appendChild(heartImg);
+    }
+}
+
+// Call this function whenever the user gets a question wrong
+function loseLife() {
+    if (lives > 0) {
+        lives--;
+        console.log("heart removed")
+        updateLivesDisplay();
+        if (lives === 0) {
+            console.log("game over")
+            
+            // Handle game over scenario
+        }
+    }
+}
 
 
 class Line {
@@ -439,24 +473,32 @@ class Quiz {
         for (let i = 0; i < currentQuestion.options.length; i++) {
             let optionButton = document.createElement('button');
             optionButton.innerText = currentQuestion.options[i];
-            optionButton.addEventListener('click', () => this.checkAnswer(i));
+            // optionButton.addEventListener('click', () => this.checkAnswer(i));
             this.optionsBox.appendChild(optionButton);
         }
     }
 
-    checkAnswer(index) {
+    areAllQuestionsAnswered() {
+        return this.currentQuestionIndex >= this.questions.length;
+    }
+
+    /*checkAnswer(index) {
+        console.log("All questions answered");
+
         let currentQuestion = this.questions[this.currentQuestionIndex];
-        if (index === currentQuestion.correctAnswer) {
-            console.log('Correct Answer!');
+        /!*if (index === currentQuestion.correctAnswer) {
+            console.log('checkAnswer index run');
         } else {
-            console.log('Wrong Answer!');
-        }
+            /!*console.log('Wrong Answer!');*!/
+        }*!/
         this.currentQuestionIndex++;
         if (this.currentQuestionIndex < this.questions.length) {
             this.displayQuestion();
+        } else {
+            console.log("All questions answered");
         }
-    }
-    
+        
+    }*/
 }
 
 // QUESTIONS LIST
@@ -662,11 +704,11 @@ function update(step) {
     }
 
     
-
     for (let item of upgradeItems) {
         //enemy_speed = upgradeItems speed
         item.pos = (item.pos - item_speed * step + N) % N;  // update items to be toward the player
         let l = lines[item.pos | 0];  // find the line the item is on
+        
         // Calculate the width based on the lane width, and cap it at 100
         let calculatedWidth = l.W;
         let cappedWidth = Math.min(calculatedWidth, 100);  // This will ensure the width never exceeds 100
@@ -682,11 +724,28 @@ function update(step) {
 
             // Check if the hit item is the correct flag for the current question
             if (item.type === getCorrectFlag()) {
+                scoreVal += 500;
+                console.log('Added 500 points!');
                 console.log('Correct Answer!');
                 // Progress to the next question or level
             } else {
                 console.log('Wrong Answer!');
+                loseLife();
                 // Provide feedback or handle incorrect answer
+            }
+            if (quiz.areAllQuestionsAnswered()) {
+                inGame = false;  // End the game
+
+                // Display the score
+                road.style.opacity = 0.4;
+                hud.style.display = "none";
+                home.style.display = "block";
+                tacho.style.display = "block";
+                text.classList.remove('blink');
+                text.innerText = `Game Over!\n Your Score: ${scoreVal}`;
+
+                // Optionally, you can also hide the quiz UI
+                quiz.quizBox.style.display = 'none';
             }
         }
     }
@@ -844,7 +903,6 @@ function init() {
     game.style.width = width + "px";
     game.style.height = height + "px";
 
-    /*hero.style.top = height - 80 + "px";*/
     hero.style.top = (height - ASSETS.IMAGE.HERO.height + 220) + "px";
     hero.style.left = halfWidth - ASSETS.IMAGE.HERO.width / 2 + "px";
     hero.style.background = `url(${ASSETS.IMAGE.HERO.src})`;

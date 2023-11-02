@@ -138,6 +138,7 @@ home
 
 #home {
     position: absolute;
+    text-align: center;
     color: #fff;
     width: 100%;
     height: 100%;
@@ -232,6 +233,11 @@ Guide
     width: 50%;
 }
 
+#character-selection {
+
+}
+
+
 /*
 #optionsBox button {
     display: block;
@@ -239,6 +245,4 @@ Guide
     padding: 5px 10px;
 }
 */
-
-
 

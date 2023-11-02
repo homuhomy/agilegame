@@ -78,11 +78,14 @@ let road = document.getElementById("road");
 let cloud = document.getElementById("cloud");
 let time = document.getElementById("time");
 let score = document.getElementById("score");
-// let lap = document.getElementById("lap");
-let tacho = document.getElementById("tacho");
 let home = document.getElementById("home");
 let highscore = document.getElementById("highscore");
 let text = document.getElementById("text");
+
+// Get character selection elements by their IDs
+const femaleCharacter = document.getElementById("female-character");
+const maleCharacter = document.getElementById("male-character");
+const characterSelection = document.getElementById("characterSelection"); // Add this line
 
 // ------------------------------------------------------------
 // helper functions
@@ -256,70 +259,6 @@ class UpgradeItem {
     }
 
 
-}
-
-
-class Audio {
-    constructor() {
-        this.audioCtx = new AudioContext();
-
-        // volume
-        this.destination = this.audioCtx.createGain();
-        this.volume = 1;
-        this.destination.connect(this.audioCtx.destination);
-
-        this.files = {};
-
-        let _self = this;
-        this.load(ASSETS.AUDIO.theme, "theme", function (key) {
-            let source = _self.audioCtx.createBufferSource();
-            source.buffer = _self.files[key];
-
-            let gainNode = _self.audioCtx.createGain();
-            gainNode.gain.value = 0.6;
-            source.connect(gainNode);
-            gainNode.connect(_self.destination);
-
-            source.loop = true;
-            source.start(0);
-        });
-    }
-
-    get volume() {
-        return this.destination.gain.value;
-    }
-
-    set volume(level) {
-        this.destination.gain.value = level;
-    }
-
-    play(key, pitch) {
-        if (this.files[key]) {
-            let source = this.audioCtx.createBufferSource();
-            source.buffer = this.files[key];
-            source.connect(this.destination);
-            if (pitch) source.detune.value = pitch;
-            source.start(0);
-        } else this.load(key, () => this.play(key));
-    }
-
-    load(src, key, callback) {
-        let _self = this;
-        let request = new XMLHttpRequest();
-        request.open("GET", src, true);
-        request.responseType = "arraybuffer";
-        request.onload = function () {
-            _self.audioCtx.decodeAudioData(
-                request.response,
-                function (beatportBuffer) {
-                    _self.files[key] = beatportBuffer;
-                    callback(key);
-                },
-                function () {}
-            );
-        };
-        request.send();
-    }
 }
 
 // ------------------------------------------------------------
@@ -563,6 +502,7 @@ let quizQuestions = [
 
 let lastUpgradeTime = 0;
 const MIN_UPGRADE_INTERVAL = 5000;
+
 // QUIZ
 // Create instances of UpgradeItem for each lane
 let upgradeItems = [];
@@ -582,8 +522,6 @@ function update(step) {
 
     var startPos = (pos / segL) | 0;
     let endPos = (startPos + N - 1) % N;
-
-    /*scoreVal += speed * step;*/
     countDown -= step;
 
     // left / right position
@@ -631,13 +569,11 @@ function update(step) {
         speed = accelerate(speed, breaking, step);
         speed = speed.clamp(0, maxSpeed);
     } else if (countDown <= 0 || lines[startPos].special) {
-        tacho.style.display = "none";
 
         home.style.display = "block";
         road.style.opacity = 0.4;
         text.innerText = "START GAME";
 
-        // highscores.push(lap.innerText);
         highscores.sort();
         updateHighscore();
 
@@ -645,12 +581,6 @@ function update(step) {
     } else {
         time.innerText = (countDown | 0).pad(3);
         score.innerText = (scoreVal | 0).pad(8);
-        tacho.innerText = speed | 0;
-
-        //let cT = new Date(timestamp() - start);
-        // lap.innerText = `${cT.getMinutes()}'${cT.getSeconds().pad(2)}"${cT
-        //     .getMilliseconds()
-        //     .pad(3)}`;
     }
 
     // sound
@@ -740,7 +670,6 @@ function update(step) {
                 road.style.opacity = 0.4;
                 hud.style.display = "none";
                 home.style.display = "block";
-                tacho.style.display = "block";
                 text.classList.remove('blink');
                 text.innerText = `Game Over!\n Your Score: ${scoreVal}`;
 
@@ -887,7 +816,6 @@ function reset() {
     road.style.opacity = 0.4;
     hud.style.display = "none";
     home.style.display = "block";
-    tacho.style.display = "block";
 }
 
 function updateHighscore() {
@@ -927,7 +855,6 @@ function init() {
             road.appendChild(element);
             line.elements.push(element);
         }
-
         lines.push(line);
     }
 
@@ -950,8 +877,6 @@ function init() {
             then = now - (delta % targetFrameRate);
             update(delta / 1000);
         }
-        
-        
     })();
 }
 

@@ -3,6 +3,8 @@ body {
     font-family: "Press Start 2P", monospace;
     font-smooth: never;
     height: 98vh;
+    background: url('images/test.png') no-repeat;
+    background-size: 100% 100%;
 }
 
 /* UI */
@@ -60,24 +62,6 @@ body {
 .heart {
     display: inline-block; /* Makes sure hearts line up in a row */
     margin: 0 5px; /* Adds space between hearts */
-}
-
-#tacho {
-    position: absolute;
-    text-align: right;
-    width: 23%;
-    bottom: 5%;
-    z-index: 2000;
-    color: #e62e13;
-    text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
-    letter-spacing: 2px;
-    font-size: 23px;
-}
-#tacho::after {
-    content: "km/h";
-    color: #fab453;
-    font-size: 18px;
-    margin-left: 5px;
 }
 
 /*
@@ -146,8 +130,85 @@ home
     z-index: 1000; /* need this cause clip-path changes stack context */
 }
 
+#links {
+    z-index: 4000;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -60%);
+    background-color: white;
+    width: 500px;
+    height: 330px;
+    border-radius: 20px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+#links h3{
+    font-size: 0.8em;
+    color: black;
+}
+#links h5{
+    font-size: 0.5em;
+    color: black;
+}
+
+#links .column{
+    font-size: 0.5em;
+    color: black;
+}
+
+#links .columns {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+#links .column {
+    width: 45%; /* Adjust the width as needed */
+}
+
+#links .qr-code {
+    text-align: center;
+}
+
+#links .qr-code img {
+    width: 100px; /* Adjust width as needed */
+    height: auto;
+}
+
+#links a {
+    color: blue;
+    text-decoration: none;
+}
+
+#links a:hover {
+    text-decoration: underline;
+}
+
+#links .form-link {
+    font-size: 0.5em;
+}
+
+#links .qr-code p {
+    margin: 0; /* This will remove the margin */
+}
+
+#links .qr-code a {
+    margin: 0; /* This will remove the margin */
+}
+
+#links .qr-code img {
+    margin-top: 0; /* This will remove the top margin of the image */
+    width: 80px;
+    height: 80px;
+}
+
+
+
+
 #character-selection {
-    z-index: 9999;
+    z-index: 2000;
     position: absolute;
     left: 50%;
     top: 50%;
@@ -207,7 +268,7 @@ h1 {
 Guide
 */
 #controls {
-    color: #868686;
+    color: #ffffff;
     font-size: 13px;
     line-height: 13px;
     margin: 10px;

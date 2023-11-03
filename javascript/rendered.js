@@ -81,6 +81,7 @@ let score = document.getElementById("score");
 let home = document.getElementById("home");
 let highscore = document.getElementById("highscore");
 let text = document.getElementById("text");
+const links = document.querySelector('#home #links');
 
 // Get character selection elements by their IDs
 const femaleCharacter = document.getElementById("female-character");
@@ -383,6 +384,7 @@ function updateDisplay() {
         charSelection.style.display = 'none';
 
         // Show the game over text
+        links.style.display = 'block';
         gameOverText.innerText = `Game Over! Your score: ${scoreVal}`;
         gameOverText.style.display = 'block';
     }
@@ -394,6 +396,7 @@ function updateDisplay() {
 
         // Hide the game over text
         gameOverText.style.display = 'none';
+        links.style.display = 'none';
     }
 }
 
@@ -851,7 +854,6 @@ function update(step) {
 function reset() {
     
     inGame = false;
-    // updateDisplay();
 
     start = timestamp();
     countDown = map[map.length - 2].to / 130 + 10;
@@ -869,6 +871,7 @@ function reset() {
 
     text.innerText = "START GAME";
     text.classList.add("blink");
+    links.style.display = 'none';
 
     road.style.opacity = 0.4;
     hud.style.display = "none";

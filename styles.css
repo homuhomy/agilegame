@@ -1,6 +1,57 @@
+@font-face {
+    font-family: 'MuseoSans';
+    src: url('fonts/MuseoSans_300.otf') format('opentype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'MuseoSans';
+    src: url('fonts/MuseoSans_300_Italic.otf') format('opentype');
+    font-weight: 300;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'MuseoSans';
+    src: url('fonts/MuseoSans_500.otf') format('opentype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'MuseoSans';
+    src: url('fonts/MuseoSans_700.otf') format('opentype');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'MuseoSans';
+    src: url('fonts/MuseoSans_900.otf') format('opentype');
+    font-weight: 900;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'MuseoSans';
+    src: url('fonts/MuseoSans_700_Italic.otf') format('opentype');
+    font-weight: 700;
+    font-style: italic;
+}
+
 body {
     background: #222;
-    font-family: "Press Start 2P", monospace;
+    font-family: 'MuseoSans', sans-serif;
+    font-weight: 300;
+}
+
+
+body {
+    background: #222;
+    font-family: 'MuseoSans', sans-serif;
+    font-weight: 900;
+    /*font-family: "Press Start 2P", monospace;*/
     font-smooth: never;
     height: 98vh;
     background: url('images/test.png') no-repeat;
@@ -108,7 +159,6 @@ road
     height: 75%;
     background-repeat: no-repeat;
     background-position: center;
-
 }
 
 /*
@@ -126,8 +176,36 @@ home
     color: #fff;
     width: 100%;
     height: 100%;
-
     z-index: 1000; /* need this cause clip-path changes stack context */
+}
+
+#home #start-game-button  {
+    font-family: 'MuseoSans', sans-serif;
+    font-weight: 900;
+    margin-top: 430px;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #9c27b0;
+    border: none;
+    border-radius: 15px; /* Rounded corners */
+    font-size: 1em;
+    color: #fff;
+    cursor: pointer;
+    outline: none;
+    transition: transform 0.2s; /* Smooth press effect */
+    box-shadow:
+            -1px -1px 0 #ffffff,
+            1px -1px 0 #ffffff,
+            -1px 1px 0 #ffffff,
+            1px 1px 0 #ffffff;
+}
+
+#home #start-game-button .play-icon {
+    margin-right: 10px;
+}
+
+#home #start-game-button:active {
+    transform: scale(0.95); /* Button press effect */
 }
 
 #links {
@@ -135,37 +213,40 @@ home
     position: absolute;
     left: 50%;
     top: 50%;
-    transform: translate(-50%, -60%);
+    transform: translate(-50%, -55%);
     background-color: white;
     width: 500px;
-    height: 330px;
+    height: 310px;
     border-radius: 20px;
     padding: 20px;
     box-sizing: border-box;
 }
 
 #links h3{
-    font-size: 0.8em;
+    margin: 0;
+    font-size: 1em;
     color: black;
 }
 #links h5{
-    font-size: 0.5em;
+    margin: 0;
+    font-size: 0.8em;
     color: black;
 }
 
 #links .column{
-    font-size: 0.5em;
+    margin: 0;
+    font-size: 0.7em;
     color: black;
 }
 
 #links .columns {
+    margin: 0 0 5px;
     display: flex;
     justify-content: space-between;
-    margin-bottom: 20px;
 }
 
 #links .column {
-    width: 45%; /* Adjust the width as needed */
+    width: 45%;
 }
 
 #links .qr-code {
@@ -173,12 +254,12 @@ home
 }
 
 #links .qr-code img {
-    width: 100px; /* Adjust width as needed */
+    width: 100px;
     height: auto;
 }
 
 #links a {
-    color: blue;
+    color: #00a19c;
     text-decoration: none;
 }
 
@@ -187,7 +268,7 @@ home
 }
 
 #links .form-link {
-    font-size: 0.5em;
+    font-size: 0.7em;
 }
 
 #links .qr-code p {
@@ -205,8 +286,6 @@ home
 }
 
 
-
-
 #character-selection {
     z-index: 2000;
     position: absolute;
@@ -214,24 +293,42 @@ home
     top: 50%;
     transform: translate(-50%, -50%);
     color: black;
-
-    font-size: 0.5em;
+    font-size: 0.8em;
+    text-shadow:
+            -1px -1px 0 #ffffff,
+            1px -1px 0 #ffffff,
+            -1px 1px 0 #ffffff,
+            1px 1px 0 #ffffff;
 }
 
-#highscore {
-    position: absolute;
-    width: 100%;
-    height: 20%;
-    bottom: 0;
-    column-count: 3;
-    column-fill: auto;
+#character-selection h2{
+    margin: 5px;
 }
 
-#highscore * {
-    color: #9e95a8;
-    margin: 0 0 6px 27px;
+#character-selection img{
+    margin-right: 5px;
+    border-radius: 10px;
 }
 
+.glow {
+    filter: drop-shadow(0 0 5px #00a19c);
+}
+
+/*#highscore {*/
+/*    position: absolute;*/
+/*    width: 100%;*/
+/*    height: 20%;*/
+/*    bottom: 0;*/
+/*    column-count: 3;*/
+/*    column-fill: auto;*/
+/*}*/
+
+/*#highscore * {*/
+/*    color: #9e95a8;*/
+/*    margin: 0 0 6px 27px;*/
+/*}*/
+
+/*
 h1 {
     position: absolute;
     left: 50%;
@@ -243,12 +340,36 @@ h1 {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
+*/
 
-#text {
+#home #title-img {
+    position: absolute;
+    left: 50%;
+    top: 20%;
+    transform: translate(-50%, -50%);
+    width: 470px;
+}
+
+#text{
     text-align: center;
     position: absolute;
     left: 50%;
     top: 80%;
+    transform: translate(-50%, -50%);
+    font-size: 1em;
+    color: #000000;
+    text-shadow:
+            -1px -1px 0 #ffffff,
+            1px -1px 0 #ffffff,
+            -1px 1px 0 #ffffff,
+            1px 1px 0 #ffffff;
+}
+
+#home #gameover-text{
+    text-align: center;
+    position: absolute;
+    left: 50%;
+    top: 10%;
     transform: translate(-50%, -50%);
     font-size: 1.5em;
     color: #fdb924;

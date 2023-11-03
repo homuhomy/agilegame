@@ -82,6 +82,7 @@ let home = document.getElementById("home");
 let highscore = document.getElementById("highscore");
 let text = document.getElementById("text");
 const links = document.querySelector('#home #links');
+const gameOverText2 = document.querySelector('#home #gameover-text');
 
 // Get character selection elements by their IDs
 const femaleCharacter = document.getElementById("female-character");
@@ -93,14 +94,23 @@ femaleCharacter.addEventListener('click', () => updateCharacter('female'));
 maleCharacter.addEventListener('click', () => updateCharacter('male'));
 
 function updateCharacter(gender) {
+    // Remove glow from all characters
+    femaleCharacter.classList.remove('glow');
+    maleCharacter.classList.remove('glow');
+
+    // Update the hero image source
     if (gender === 'female') {
         ASSETS.IMAGE.HERO.src = 'images/female.png';
+        femaleCharacter.classList.add('glow');  // Add glow to clicked character
     } else if (gender === 'male') {
         ASSETS.IMAGE.HERO.src = 'images/male.png';
+        maleCharacter.classList.add('glow');  // Add glow to clicked character
     }
+
     // Update the hero element's background image
     hero.style.background = `url(${ASSETS.IMAGE.HERO.src})`;
 }
+
 
 
 // ------------------------------------------------------------
@@ -201,7 +211,7 @@ function loseLife() {
             home.style.display = "block";
             text.classList.remove('blink');
             updateDisplay();
-            text.innerText = `Game Over!\n Your Score: ${scoreVal}`;
+            text.innerText = `Your Score: ${scoreVal}`;
 
             // Optionally, you can also hide the quiz UI
             quiz.quizBox.style.display = 'none';
@@ -373,7 +383,7 @@ let map = genMap();
 
 function updateDisplay() {
     // Get references to the HTML elements
-    const title = document.querySelector('#home h1');
+    const title = document.querySelector('#home #title-img');
     const charSelection = document.getElementById('character-selection');
     const gameOverText = document.getElementById('text');
 
@@ -385,8 +395,10 @@ function updateDisplay() {
 
         // Show the game over text
         links.style.display = 'block';
-        gameOverText.innerText = `Game Over! Your score: ${scoreVal}`;
+        gameOverText.innerText = `Your Score: ${scoreVal}`;
+        gameOverText2.classList.add("blink");
         gameOverText.style.display = 'block';
+        gameOverText2.style.display = 'block';
     }
     // If the game is not over
     else {
@@ -396,6 +408,7 @@ function updateDisplay() {
 
         // Hide the game over text
         gameOverText.style.display = 'none';
+        gameOverText2.style.display = 'none';
         links.style.display = 'none';
     }
 }
@@ -405,7 +418,39 @@ function updateDisplay() {
 // ------------------------------------------------------------
 
 let gameStartTime = null;
-addEventListener('keyup', function (e) {
+
+document.getElementById('start-game-button').addEventListener('click', function() {
+    // Your existing game start logic that was previously under if (e.code === 'KeyC') { ... } goes here.
+    if (!inGame) {
+        sleep(0)
+            .then((_) => {
+                text.classList.remove('blink');
+                text.innerText = 3;
+                audio.play('beep');
+                return sleep(1000);
+            })
+            .then((_) => {
+                text.innerText = 2;
+                audio.play('beep');
+                return sleep(1000);
+            })
+            .then((_) => {
+                reset();
+                home.style.display = 'none';
+                road.style.opacity = 1;
+                hero.style.display = 'block';
+                hud.style.display = 'block';
+                audio.play('beep', 500);
+                inGame = true; // Start the game
+                resetGame();
+                quiz.quizBox.style.display = 'block';
+                quiz.displayQuestion()
+                gameStartTime = timestamp();  // Store the game start timestamp
+            });
+    }
+});
+
+/*addEventListener('keyup', function (e) {
     if (e.code === "KeyM") {
         e.preventDefault();
         audio.volume = audio.volume === 0 ? 1 : 0;
@@ -435,6 +480,7 @@ addEventListener('keyup', function (e) {
                     hud.style.display = 'block';
                     audio.play('beep', 500);
                     inGame = true; // Start the game
+                    resetGame();
                     quiz.quizBox.style.display = 'block';
                     quiz.displayQuestion()
                     gameStartTime = timestamp();  // Store the game start timestamp
@@ -447,7 +493,7 @@ addEventListener('keyup', function (e) {
         e.preventDefault();
         reset();
     }
-});
+});*/
 
 /// QUIZ QUESTIONS SECTION
 
@@ -588,10 +634,10 @@ function update(step) {
     //for the image/frame selection
     if (KEYS.ArrowRight)
         (hero.style.backgroundPosition = "-1160px 0"),
-            (playerX += 0.007 * step * speed);
+            (playerX += 0.01 * step * speed);
     else if (KEYS.ArrowLeft)
         (hero.style.backgroundPosition = "0 0"),
-            (playerX -= 0.007 * step * speed);
+            (playerX -= 0.01 * step * speed);
     else hero.style.backgroundPosition = "-580px 0";
 
     playerX = playerX.clamp(-3, 3);
@@ -630,7 +676,7 @@ function update(step) {
 
         home.style.display = "block";
         road.style.opacity = 0.4;
-        text.innerText = "START GAME";
+        text.innerText = "";
 
         highscores.sort();
         updateHighscore();
@@ -730,7 +776,9 @@ function update(step) {
                 hud.style.display = "none";
                 home.style.display = "block";
                 text.classList.remove('blink');
-                text.innerText = `Game Over!\n Your Score: ${scoreVal}`;
+                
+                text.innerText = `Your Score: ${scoreVal}\nPress C to replay`;
+                console.log('all questions answered')
 
                 // Optionally, you can also hide the quiz UI
                 quiz.quizBox.style.display = 'none';
@@ -869,13 +917,15 @@ function reset() {
 
     for (let line of lines) line.curve = line.y = 0;
 
-    text.innerText = "START GAME";
+    text.innerText = "";
     text.classList.add("blink");
     links.style.display = 'none';
+    gameOverText2.style.display = 'none';
 
     road.style.opacity = 0.4;
     hud.style.display = "none";
     home.style.display = "block";
+
 }
 
 function updateHighscore() {
@@ -886,6 +936,36 @@ function updateHighscore() {
         }`;
     }
 }
+
+function resetGame() {
+    // Reset lives, score, and question index
+    lives = 3;
+    scoreVal = 0;
+    quiz.currentQuestionIndex = 0;
+
+    // Clear any existing upgrade items
+    upgradeItems = [];
+
+    // Reset the map and related variables if necessary
+    map = genMap();
+    mapIndex = 0;
+    sectionProg = 0;
+    pos = 0;
+
+    // Hide the game over screen and show the game UI
+    home.style.display = 'none';
+    road.style.opacity = 1;
+    hero.style.display = 'block';
+    hud.style.display = 'block';
+
+    // Reset other UI elements if necessary
+    updateLivesDisplay();
+    time.innerText = "000";
+    score.innerText = "00000000";
+
+}
+
+
 
 function init() {
     game.style.width = width + "px";

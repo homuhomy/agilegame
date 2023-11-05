@@ -2,7 +2,7 @@ const ASSETS = {
     COLOR: {
         TAR: ["#959298", "#9c9a9d"],
         RUMBLE: ["#959298", "#f5f2f6"],
-        GRASS: ["#eedccd", "#e6d4c5"],
+        GRASS: ["#aec232", "#dff676"],
     },
 
     IMAGE: {
@@ -111,8 +111,6 @@ function updateCharacter(gender) {
     hero.style.background = `url(${ASSETS.IMAGE.HERO.src})`;
 }
 
-
-
 // ------------------------------------------------------------
 // helper functions
 // ------------------------------------------------------------
@@ -204,7 +202,6 @@ function loseLife() {
             console.log("game over")
             inGame = false;  // End the game
             
-
             // Display the score
             road.style.opacity = 0.4;
             hud.style.display = "none";
@@ -286,7 +283,7 @@ class UpgradeItem {
         item_speed = newSpeed;  // Assuming item_speed is a global variable
     }
 
-    setHit() {
+     setHit() {
         this.hit = true;
         quiz.currentQuestionIndex++;
         canStartQuiz = true;  // Set the canStartQuiz flag to true when a flag is hit
@@ -295,8 +292,23 @@ class UpgradeItem {
         }
     }
 
+    triggerReset() {
+        setTimeout(() => {
+            this.resetHit();
+        }, 3000);
+    }
 
+    resetHit() {
+        this.hit = false;
+    }
 }
+
+function resetFlags() {
+    for (let item of upgradeItems) {
+        item.resetHit();  // assuming resetHit() sets the flag to its initial state
+    }
+}
+
 
 // ------------------------------------------------------------
 // global varriables
@@ -513,8 +525,9 @@ class Quiz {
         let currentQuestion = this.questions[this.currentQuestionIndex];
         this.questionBox.innerText = currentQuestion.question;
         this.optionsBox.innerHTML = '';
+        
         for (let i = 0; i < currentQuestion.options.length; i++) {
-            let optionButton = document.createElement('button');
+            let optionButton = document.createElement('div');
             optionButton.innerText = currentQuestion.options[i];
             // optionButton.addEventListener('click', () => this.checkAnswer(i));
             this.optionsBox.appendChild(optionButton);
@@ -525,23 +538,22 @@ class Quiz {
         return this.currentQuestionIndex >= this.questions.length;
     }
 
-    /*checkAnswer(index) {
-        console.log("All questions answered");
+    checkAnswer(index) {
+        console.log("check answer index");
 
         let currentQuestion = this.questions[this.currentQuestionIndex];
-        /!*if (index === currentQuestion.correctAnswer) {
+        /*if (index === currentQuestion.correctAnswer) {
             console.log('checkAnswer index run');
         } else {
             /!*console.log('Wrong Answer!');*!/
-        }*!/
+        }*/
         this.currentQuestionIndex++;
         if (this.currentQuestionIndex < this.questions.length) {
             this.displayQuestion();
         } else {
             console.log("All questions answered");
         }
-        
-    }*/
+    }
 }
 
 // QUESTIONS LIST
@@ -591,7 +603,7 @@ let quizQuestions =  [
     {
         question: 'Q9: Name another one of the 3 handbooks we have published under Agile Wow Handbook series. Hint : What we offer',
         options: ['A: WRONG ANSWER', 'B: WRONG ANSWER', 'C: Progressive organisations handbook\n'],
-        correctAnswer: 0
+        correctAnswer: 2
     },
     {
         question: 'Q10: Which company practices "Freedom & Trust" in 8 trends?',
@@ -616,7 +628,6 @@ let lastUpgradePos = 0;  // Last position where flags were placed
 const MIN_GAP = 20;
 let currentTime = timestamp();
 let elapsedTime = currentTime - gameStartTime;
-
 
 function update(step) {
     // prepare this iteration
@@ -701,10 +712,9 @@ function update(step) {
     }px 0`;*/
 
     //QUIZ
-
-    currentTime = timestamp();
-    elapsedTime = currentTime - gameStartTime;
-
+    /*currentTime = timestamp();
+    elapsedTime = currentTime - gameStartTime;*/
+    
     if (elapsedTime >= 10000 && currentTime - lastUpgradeTime >= MIN_UPGRADE_INTERVAL) {
         // Reset the hit flag of all existing UpgradeItem instances
         for (let item of upgradeItems) {
@@ -713,7 +723,7 @@ function update(step) {
 
         // Check the gap to the last set of flags
         let gap = pos - lastUpgradePos;
-        if (gap >= MIN_GAP || gap < 0) {  // The gap can be negative if pos has wrapped around
+        if (gap >= MIN_GAP || gap < 0) {  
             // Create new UpgradeItem instances
             upgradeItems.push(new UpgradeItem('A', LANE.A, pos));
             upgradeItems.push(new UpgradeItem('B', LANE.B, pos));
@@ -722,8 +732,7 @@ function update(step) {
             lastUpgradePos = pos;  // Update the position of the last set of flags
         }
     }
-
-
+    
     // Assuming 'currentQuestion' is the current question object from your quizQuestions array
     let currentQuestion = quiz.questions[quiz.currentQuestionIndex];
 
@@ -736,7 +745,6 @@ function update(step) {
             default: throw new Error('Invalid correct answer index');
         }
     }
-
     
     for (let item of upgradeItems) {
         //enemy_speed = upgradeItems speed
@@ -754,7 +762,7 @@ function update(step) {
         if (!item.hit && (item.pos | 0) === startPos && isCollide(playerX * 5 + LANE.B, 0.5, item.lane, 0.5)) {
             console.log(`${item.type} has been chosen`);
             item.setHit();
-            item.hit = true;  // mark the item as hit
+            item.triggerReset();
 
             // Check if the hit item is the correct flag for the current question
             if (item.type === getCorrectFlag()) {
@@ -765,7 +773,6 @@ function update(step) {
             } else {
                 console.log('Wrong Answer!');
                 loseLife();
-                // Provide feedback or handle incorrect answer
             }
             if (quiz.areAllQuestionsAnswered()) {
                 inGame = false;  // End the game
@@ -777,7 +784,7 @@ function update(step) {
                 home.style.display = "block";
                 text.classList.remove('blink');
                 
-                text.innerText = `Your Score: ${scoreVal}\nPress C to replay`;
+                text.innerText = `Your Score: ${scoreVal}`;
                 console.log('all questions answered')
 
                 // Optionally, you can also hide the quiz UI
@@ -962,6 +969,7 @@ function resetGame() {
     updateLivesDisplay();
     time.innerText = "000";
     score.innerText = "00000000";
+    
 
 }
 

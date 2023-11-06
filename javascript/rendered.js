@@ -878,7 +878,7 @@ function reset() {
     inGame = false;
 
     start = timestamp();
-    countDown = map[map.length - 2].to / 130 + 10;
+    // countDown = map[map.length - 2].to / 130 + 10;
 
     playerX = 0;
     speed = 0;

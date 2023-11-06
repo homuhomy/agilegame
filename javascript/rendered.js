@@ -447,7 +447,6 @@ document.getElementById('start-game-button').addEventListener('click', function(
             })
             .then((_) => {
                 reset();
-                home.style.display = 'none';
                 road.style.opacity = 1;
                 hero.style.display = 'block';
                 hud.style.display = 'block';
@@ -509,12 +508,12 @@ class Quiz {
 let quizQuestions =  [
     {
         question: 'Q1: What are Agile Enterprise’s focus area. Hint : About AE',
-        options: ['A: Shape Leadership, Mindset & Culture', 'B: Work together', 'C: SOME WRONG ANSWER'],
+        options: ['A: Shape Leadership, Mindset & Culture', 'B: Work together', 'C: Agile Insights'],
         correctAnswer: 0
     },
     {
         question: 'Q2: What are Agile Enterprise’s focus area. Hint : About AE',
-        options: ['A: Hierarchical Management', 'B: Strengthen Agile teams & Capability ', 'C: SOME WRONG ANSWER'],
+        options: ['A: Hierarchical Management', 'B: Strengthen Agile teams & Capability ', 'C: Sustainable development'],
         correctAnswer: 1
     },
     {
@@ -734,7 +733,7 @@ function update(step) {
             } else {
                 console.log('Wrong Answer!');
 
-                feedbackElement.innerText = "Incorrect Answer";
+                feedbackElement.innerText = "Incorrect";
                 setTimeout(() => {
                     feedbackElement.innerText = '';  // Clear the feedback text after 3 seconds
                 }, 1000);

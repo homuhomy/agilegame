@@ -80,6 +80,7 @@ let time = document.getElementById("time");
 let score = document.getElementById("score");
 let home = document.getElementById("home");
 let highscore = document.getElementById("highscore");
+
 let text = document.getElementById("text");
 const links = document.querySelector('#home #links');
 const gameOverText2 = document.querySelector('#home #gameover-text');
@@ -215,7 +216,6 @@ function loseLife() {
         }
     }
 }
-
 
 class Line {
     constructor() {
@@ -390,7 +390,6 @@ function genMap() {
     return map;
 }
 
-
 let map = genMap();
 
 function updateDisplay() {
@@ -462,51 +461,6 @@ document.getElementById('start-game-button').addEventListener('click', function(
     }
 });
 
-/*addEventListener('keyup', function (e) {
-    if (e.code === "KeyM") {
-        e.preventDefault();
-        audio.volume = audio.volume === 0 ? 1 : 0;
-        return;
-    }
-
-    if (e.code === 'KeyC') {
-        e.preventDefault();
-        if (!inGame) {
-            sleep(0)
-                .then((_) => {
-                    text.classList.remove('blink');
-                    text.innerText = 3;
-                    audio.play('beep');
-                    return sleep(1000);
-                })
-                .then((_) => {
-                    text.innerText = 2;
-                    audio.play('beep');
-                    return sleep(1000);
-                })
-                .then((_) => {
-                    reset();
-                    home.style.display = 'none';
-                    road.style.opacity = 1;
-                    hero.style.display = 'block';
-                    hud.style.display = 'block';
-                    audio.play('beep', 500);
-                    inGame = true; // Start the game
-                    resetGame();
-                    quiz.quizBox.style.display = 'block';
-                    quiz.displayQuestion()
-                    gameStartTime = timestamp();  // Store the game start timestamp
-                });
-        }
-        return;
-    }
-
-    if (e.code === "Escape") {
-        e.preventDefault();
-        reset();
-    }
-});*/
-
 /// QUIZ QUESTIONS SECTION
 
 class Quiz {
@@ -539,14 +493,8 @@ class Quiz {
     }
 
     checkAnswer(index) {
-        console.log("check answer index");
-
         let currentQuestion = this.questions[this.currentQuestionIndex];
-        /*if (index === currentQuestion.correctAnswer) {
-            console.log('checkAnswer index run');
-        } else {
-            /!*console.log('Wrong Answer!');*!/
-        }*/
+
         this.currentQuestionIndex++;
         if (this.currentQuestionIndex < this.questions.length) {
             this.displayQuestion();
@@ -561,33 +509,33 @@ class Quiz {
 let quizQuestions =  [
     {
         question: 'Q1: What are Agile Enterprise’s focus area. Hint : About AE',
-        options: ['A: Shape Leadership, Mindset & Culture', 'B: SOME WRONG ANSWER', 'C: SOME WRONG ANSWER'],
+        options: ['A: Shape Leadership, Mindset & Culture', 'B: Work together', 'C: SOME WRONG ANSWER'],
         correctAnswer: 0
     },
     {
         question: 'Q2: What are Agile Enterprise’s focus area. Hint : About AE',
-        options: ['A: SOME WRONG ANSWER', 'B: Strengthen Agile teams & Capability ', 'C: SOME WRONG ANSWER'],
+        options: ['A: Hierarchical Management', 'B: Strengthen Agile teams & Capability ', 'C: SOME WRONG ANSWER'],
         correctAnswer: 1
     },
     {
         question: 'Q3: What are some examples of Being Agile? Hint : Agile in PETRONAS',
-        options: ['A: Get frequent customer feedback ', 'B: deliver in increments ', 'C: Use mistakes as learning opportunities'],
+        options: ['A: Get frequent customer feedback ', 'B: Deliver in increments ', 'C: Use mistakes as learning opportunities'],
         correctAnswer: 2
     },
     {
         question: 'Q4: What are some examples of Being Agile? Hint : Agile in PETRONAS',
-        options: ['A: value progress over perfection ', 'B: quickly pivot and make changes', 'C: WRONG ANSWER'],
+        options: ['A: Value progress over perfection ', 'B: Quickly pivot and make changes', 'C: Resistance to Change'],
         correctAnswer: 0
     },
     {
-        question: 'Q5: Name the one of the four Agile values. Hint : Agile in PETRONAS ',
-        options: ['A: maintain simplicity ', 'B: customer collaboration ', 'C: trust and support'],
+        question: 'Q5: Name one of the four Agile values. Hint : Agile in PETRONAS ',
+        options: ['A: Maintain simplicity ', 'B: Customer collaboration over contract negotiation ', 'C: Trust and support'],
         correctAnswer: 1
     },
     {
-        question: 'Q6: Name another one of the four Agile values. Hint : Agile in PETRONAS ',
-        options: ['A: individuals and interactions ', 'B: self organising-team', 'C: face to face conversation '],
-        correctAnswer: 1
+        question: 'Q6: What is one of the 12 Principles in Agile Manifesto?  Hint : Agile in PETRONAS ',
+        options: ['A: Sustainable development', 'B: Speak Up', 'C: Be enterprising'],
+        correctAnswer: 0
     },
     {
         question: 'Q7: How many agile adventures we have released so far?\n' +
@@ -597,18 +545,23 @@ let quizQuestions =  [
     },
     {
         question: 'Q8: Name one of the 3 handbooks we have published under Agile Wow Handbook series. Hint : What we offer',
-        options: ['A: 8 trends of progressive organisations handbook', 'B: WRONG ANSWER', 'C: WRONG ANSWER'],
+        options: ['A: Agile Heroes', 'B: Agile Leadership', 'C: Agile Ways'],
         correctAnswer: 0
     },
     {
         question: 'Q9: Name another one of the 3 handbooks we have published under Agile Wow Handbook series. Hint : What we offer',
-        options: ['A: WRONG ANSWER', 'B: WRONG ANSWER', 'C: Progressive organisations handbook\n'],
+        options: ['A: Digital Agenda', "B: A Beginner's Guide to Agile", 'C: Progressive Organisations'],
         correctAnswer: 2
     },
     {
-        question: 'Q10: Which company practices "Freedom & Trust" in 8 trends?',
+        question: 'Q10: Which company practices "Freedom & Trust" in 8 trends? Hint : What we offer',
         options: ['A: Nucor', 'B: Haier', 'C: Spotify'],
         correctAnswer: 2
+    },
+    {
+        question: 'Q11: What is one of the Agile trainings that are available on myLearningX? Hint: Capability & Coaching',
+        options: ['A: Professional Scrum Master I', 'B: Professional Scrum Master II', 'C: An Intermediate Guide to Agile'],
+        correctAnswer: 0
     }
 ];
 
@@ -628,6 +581,8 @@ let lastUpgradePos = 0;  // Last position where flags were placed
 const MIN_GAP = 20;
 let currentTime = timestamp();
 let elapsedTime = currentTime - gameStartTime;
+
+let feedbackElement = document.getElementById('feedback');
 
 function update(step) {
     // prepare this iteration
@@ -769,9 +724,21 @@ function update(step) {
                 scoreVal += 500;
                 console.log('Added 500 points!');
                 console.log('Correct Answer!');
+
+                feedbackElement.innerText = "+500";
+                setTimeout(() => {
+                    feedbackElement.innerText = '';  // Clear the feedback text after 3 seconds
+                }, 1000);
+                
                 // Progress to the next question or level
             } else {
                 console.log('Wrong Answer!');
+
+                feedbackElement.innerText = "Incorrect Answer";
+                setTimeout(() => {
+                    feedbackElement.innerText = '';  // Clear the feedback text after 3 seconds
+                }, 1000);
+                
                 loseLife();
             }
             if (quiz.areAllQuestionsAnswered()) {
@@ -792,6 +759,7 @@ function update(step) {
             }
         }
     }
+    
     
     // draw road
     let maxy = height;

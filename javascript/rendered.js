@@ -591,7 +591,7 @@ function update(step) {
 
     var startPos = (pos / segL) | 0;
     let endPos = (startPos + N - 1) % N;
-    // countDown -= step;
+    countDown -= step;
 
     // left / right position
     playerX -= (lines[startPos].curve / 5000) * step * speed;
@@ -639,12 +639,12 @@ function update(step) {
         speed = speed.clamp(0, maxSpeed);
     } else if (countDown <= 0 || lines[startPos].special) {
 
-        home.style.display = "block";
-        road.style.opacity = 0.4;
-        text.innerText = "";
-
-        highscores.sort();
-        updateHighscore();
+        // home.style.display = "block";
+        // road.style.opacity = 0.4;
+        // text.innerText = "";
+        //
+        // highscores.sort();
+        // updateHighscore();
 
         // inGame = false;
     } else {

@@ -936,8 +936,6 @@ function resetGame() {
     updateLivesDisplay();
     time.innerText = "000";
     score.innerText = "00000000";
-    
-
 }
 
 

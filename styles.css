@@ -408,6 +408,10 @@ Guide
     z-index: 5000;
 }
 
+#questionBox{
+    color: #00a19c;
+}
+
 #questionBox, #optionsBox {
     text-align: center;
     background-color: #fff;

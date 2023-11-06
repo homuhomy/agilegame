@@ -508,22 +508,22 @@ class Quiz {
 let quizQuestions =  [
     {
         question: 'Q1: What are Agile Enterprise’s focus area. Hint : About AE',
-        options: ['A: Shape Leadership, Mindset & Culture', 'B: Work together', 'C: Agile Insights'],
+        options: ['A: Shape Leadership, Mindset & Culture', 'B: Enterprise Agility', 'C: Agile Insights'],
         correctAnswer: 0
     },
     {
         question: 'Q2: What are Agile Enterprise’s focus area. Hint : About AE',
-        options: ['A: Hierarchical Management', 'B: Strengthen Agile teams & Capability ', 'C: Sustainable development'],
+        options: ['A: Agile Capability', 'B: Strengthen Agile teams & Capability ', 'C: Sustainable development'],
         correctAnswer: 1
     },
     {
-        question: 'Q3: What are some examples of Being Agile? Hint : Agile in PETRONAS',
-        options: ['A: Get frequent customer feedback ', 'B: Deliver in increments ', 'C: Use mistakes as learning opportunities'],
+        question: 'Q3: What is being Agile? Hint : Agile in PETRONAS',
+        options: ['A: Scrum methodology', 'B: Organisational transformation', 'C: Mindset and behaviour shift to build agility'],
         correctAnswer: 2
     },
     {
-        question: 'Q4: What are some examples of Being Agile? Hint : Agile in PETRONAS',
-        options: ['A: Value progress over perfection ', 'B: Quickly pivot and make changes', 'C: Resistance to Change'],
+        question: 'Q4: What is doing Agile? Hint : Agile in PETRONAS',
+        options: ['A: Practice agile methodology ', 'B: Mindset and values', 'C: Project methodology'],
         correctAnswer: 0
     },
     {
@@ -533,35 +533,37 @@ let quizQuestions =  [
     },
     {
         question: 'Q6: What is one of the 12 Principles in Agile Manifesto?  Hint : Agile in PETRONAS ',
-        options: ['A: Sustainable development', 'B: Speak Up', 'C: Be enterprising'],
+        options: ['A: Self-organizing teams', 'B: Focused collaboration', 'C: Be enterprising'],
         correctAnswer: 0
     },
     {
-        question: 'Q7: How many agile adventures we have released so far?\n' +
+        question: 'Q7: How many Agile Adventures comic have we released so far?\n' +
             'Hint: Media library ',
         options: ['A: 12', 'B: 14', 'C: 15'],
         correctAnswer: 0
     },
     {
-        question: 'Q8: Name one of the 3 handbooks we have published under Agile Wow Handbook series. Hint : What we offer',
-        options: ['A: Agile Heroes', 'B: Agile Leadership', 'C: Agile Ways'],
-        correctAnswer: 0
+        question: 'Q8: Which company uses CLOU? Hint: Media library',
+        options: ['A: Haier', 'B: Morning Star', 'C: Netflix'],
+        correctAnswer: 1
     },
     {
-        question: 'Q9: Name another one of the 3 handbooks we have published under Agile Wow Handbook series. Hint : What we offer',
+        question: 'Q9: Name another one of the 3 handbooks we have published under Agile WoW Handbook series. Hint : What we offer',
         options: ['A: Digital Agenda', "B: A Beginner's Guide to Agile", 'C: Progressive Organisations'],
         correctAnswer: 2
     },
     {
-        question: 'Q10: Which company practices "Freedom & Trust" in 8 trends? Hint : What we offer',
-        options: ['A: Nucor', 'B: Haier', 'C: Spotify'],
+        question: 'Q10: What is one of the 8 trends of progressive organisations? Hint : What we offer',
+        options: ['A: Directive leadership', 'B: Profit Driven', 'C: Radical transparency'],
         correctAnswer: 2
     },
-    /*{
-        question: 'Q11: What is one of the Agile trainings that are available on myLearningX? Hint: Capability & Coaching',
-        options: ['A: Professional Scrum Master I', 'B: Professional Scrum Master II', 'C: An Intermediate Guide to Agile'],
+    {
+        question: 'Q11: Name one of the 3 handbooks we have published under Agile WoW Handbook series. Hint : What we offer',
+        options: ['A: Agile Heroes', 'B: Agile Leadership', 'C: Agile Ways'],
         correctAnswer: 0
-    }*/
+    }
+
+
 ];
 
 // ------------------------------------------------------------
@@ -638,15 +640,6 @@ function update(step) {
         speed = accelerate(speed, breaking, step);
         speed = speed.clamp(0, maxSpeed);
     } else if (countDown <= 0 || lines[startPos].special) {
-
-        // home.style.display = "block";
-        // road.style.opacity = 0.4;
-        // text.innerText = "";
-        //
-        // highscores.sort();
-        // updateHighscore();
-
-        // inGame = false;
     } else {
         time.innerText = (countDown | 0).pad(3);
         score.innerText = (scoreVal | 0).pad(8);
@@ -664,10 +657,6 @@ function update(step) {
    /* buildings.style.backgroundPosition = `${
         (cloudOffset -= lines[startPos].curve * step * speed * 0.13) | 0
     }px 0`;*/
-
-    //QUIZ
-    /*currentTime = timestamp();
-    elapsedTime = currentTime - gameStartTime;*/
     
     if (elapsedTime >= 10000 && currentTime - lastUpgradeTime >= MIN_UPGRADE_INTERVAL) {
         // Reset the hit flag of all existing UpgradeItem instances
@@ -744,6 +733,7 @@ function update(step) {
                 inGame = false;  // End the game
 
                 // Display the score
+                upgradeItems = [];
                 updateDisplay();
                 road.style.opacity = 0.4;
                 hud.style.display = "none";
@@ -753,13 +743,12 @@ function update(step) {
                 text.innerText = `Your Score: ${scoreVal}`;
                 console.log('all questions answered')
 
-                // Optionally, you can also hide the quiz UI
                 quiz.quizBox.style.display = 'none';
+                item.element.style.display = 'none';
             }
         }
     }
-    
-    
+
     // draw road
     let maxy = height;
     let camH = H + lines[startPos].y;
@@ -936,9 +925,8 @@ function resetGame() {
     updateLivesDisplay();
     time.innerText = "000";
     score.innerText = "00000000";
+
 }
-
-
 
 function init() {
     game.style.width = width + "px";

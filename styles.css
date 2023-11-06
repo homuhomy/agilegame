@@ -377,6 +377,16 @@ home
 /*
 Guide
 */
+#email {
+    color: #ffffff;
+    font-size: 13px;
+    line-height: 13px;
+    margin: 10px;
+    text-align: center;
+    font-family: 'MuseoSans', sans-serif;
+    font-weight: 300;
+}
+
 #controls {
     color: #ffffff;
     font-size: 13px;

@@ -557,11 +557,11 @@ let quizQuestions =  [
         options: ['A: Nucor', 'B: Haier', 'C: Spotify'],
         correctAnswer: 2
     },
-    {
+    /*{
         question: 'Q11: What is one of the Agile trainings that are available on myLearningX? Hint: Capability & Coaching',
         options: ['A: Professional Scrum Master I', 'B: Professional Scrum Master II', 'C: An Intermediate Guide to Agile'],
         correctAnswer: 0
-    }
+    }*/
 ];
 
 // ------------------------------------------------------------
@@ -591,7 +591,7 @@ function update(step) {
 
     var startPos = (pos / segL) | 0;
     let endPos = (startPos + N - 1) % N;
-    countDown -= step;
+    // countDown -= step;
 
     // left / right position
     playerX -= (lines[startPos].curve / 5000) * step * speed;
@@ -646,7 +646,7 @@ function update(step) {
         highscores.sort();
         updateHighscore();
 
-        inGame = false;
+        // inGame = false;
     } else {
         time.innerText = (countDown | 0).pad(3);
         score.innerText = (scoreVal | 0).pad(8);

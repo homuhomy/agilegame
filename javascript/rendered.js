@@ -116,6 +116,7 @@ function updateCharacter(gender) {
 // helper functions
 // ------------------------------------------------------------
 
+
 Number.prototype.pad = function (numZeros, char = 0) {
     let n = Math.abs(this);
     let zeros = Math.max(0, numZeros - Math.floor(n).toString().length);
@@ -202,6 +203,7 @@ function loseLife() {
         if (lives === 0) {
             console.log("game over")
             inGame = false;  // End the game
+            removeLastSetOfFlags();
             
             // Display the score
             road.style.opacity = 0.4;
@@ -308,7 +310,6 @@ function resetFlags() {
         item.resetHit();  // assuming resetHit() sets the flag to its initial state
     }
 }
-
 
 // ------------------------------------------------------------
 // global varriables
@@ -504,7 +505,6 @@ class Quiz {
 }
 
 // QUESTIONS LIST
-//check which question appear and which arent
 let quizQuestions =  [
     {
         question: 'Q1: What are Agile Enterprise’s focus area. Hint : About AE',
@@ -584,6 +584,22 @@ let currentTime = timestamp();
 let elapsedTime = currentTime - gameStartTime;
 
 let feedbackElement = document.getElementById('feedback');
+
+/*function removeLastSetOfFlags() {
+    upgradeItems = upgradeItems.filter((item) => !item.hit);
+}*/
+
+function removeLastSetOfFlags() {
+    // Loop through each upgradeItem and remove its element from the DOM
+    for (let item of upgradeItems) {
+        if (item.element && item.element.parentNode) {
+            item.element.parentNode.removeChild(item.element);
+        }
+    }
+    // Clear the upgradeItems array
+    upgradeItems = [];
+}
+
 
 function update(step) {
     // prepare this iteration
@@ -700,7 +716,7 @@ function update(step) {
         l.drawSprite(4000, item.element, {src: `images/flag${item.type}.png`, width: cappedWidth, height: 100}, item.lane);
     }
 
-    // Your collision detection logic
+    // collision detection logic
     for (let item of upgradeItems) {
         if (!item.hit && (item.pos | 0) === startPos && isCollide(playerX * 5 + LANE.B, 0.5, item.lane, 0.5)) {
             console.log(`${item.type} has been chosen`);
@@ -717,7 +733,7 @@ function update(step) {
                 setTimeout(() => {
                     feedbackElement.innerText = '';  // Clear the feedback text after 3 seconds
                 }, 1000);
-                
+
                 // Progress to the next question or level
             } else {
                 console.log('Wrong Answer!');
@@ -734,6 +750,7 @@ function update(step) {
 
                 // Display the score
                 upgradeItems = [];
+                removeLastSetOfFlags();
                 updateDisplay();
                 road.style.opacity = 0.4;
                 hud.style.display = "none";
@@ -744,7 +761,6 @@ function update(step) {
                 console.log('all questions answered')
 
                 quiz.quizBox.style.display = 'none';
-                item.element.style.display = 'none';
             }
         }
     }
@@ -866,6 +882,8 @@ function reset() {
     
     inGame = false;
 
+    removeLastSetOfFlags();
+
     start = timestamp();
     // countDown = map[map.length - 2].to / 130 + 10;
 
@@ -891,6 +909,7 @@ function reset() {
 
 }
 
+
 function updateHighscore() {
     let hN = Math.min(12, highscores.length);
     for (let i = 0; i < hN; i++) {
@@ -905,9 +924,6 @@ function resetGame() {
     lives = 3;
     scoreVal = 0;
     quiz.currentQuestionIndex = 0;
-
-    // Clear any existing upgrade items
-    upgradeItems = [];
 
     // Reset the map and related variables if necessary
     map = genMap();
@@ -926,6 +942,10 @@ function resetGame() {
     time.innerText = "000";
     score.innerText = "00000000";
 
+    currentTime = timestamp();
+    elapsedTime = currentTime - gameStartTime;
+    
+    
 }
 
 function init() {

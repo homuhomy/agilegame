@@ -512,32 +512,32 @@ class Quiz {
 // QUESTIONS LIST
 let quizQuestions =  [
     {
-        question: 'Q1: What are Agile Enterprise’s focus area. Hint : About AE',
+        question: 'Q1: What are Agile Enterprise’s focus area. \nHint: About AE',
         options: ['A: Shape Leadership, Mindset & Culture', 'B: Enterprise Agility', 'C: Agile Insights'],
         correctAnswer: 0
     },
     {
-        question: 'Q2: What are Agile Enterprise’s focus area. Hint : About AE',
+        question: 'Q2: What are Agile Enterprise’s focus area. \nHint: About AE',
         options: ['A: Agile Capability', 'B: Strengthen Agile teams & Capability ', 'C: Sustainable development'],
         correctAnswer: 1
     },
     {
-        question: 'Q3: What is being Agile? Hint : Agile in PETRONAS',
+        question: 'Q3: What is being Agile? \nHint: Agile in PETRONAS',
         options: ['A: Scrum methodology', 'B: Organisational transformation', 'C: Mindset and behaviour shift to build agility'],
         correctAnswer: 2
     },
     {
-        question: 'Q4: What is doing Agile? Hint : Agile in PETRONAS',
+        question: 'Q4: What is doing Agile? \nHint: Agile in PETRONAS',
         options: ['A: Practice agile methodology ', 'B: Mindset and values', 'C: Project methodology'],
         correctAnswer: 0
     },
     {
-        question: 'Q5: Name one of the four Agile values. Hint : Agile in PETRONAS ',
+        question: 'Q5: Name one of the four Agile values. \nHint: Agile in PETRONAS ',
         options: ['A: Maintain simplicity ', 'B: Customer collaboration over contract negotiation ', 'C: Trust and support'],
         correctAnswer: 1
     },
     {
-        question: 'Q6: What is one of the 12 Principles in Agile Manifesto?  Hint : Agile in PETRONAS ',
+        question: 'Q6: What is one of the 12 Principles in Agile Manifesto?  \nHint: Agile in PETRONAS ',
         options: ['A: Self-organizing teams', 'B: Focused collaboration', 'C: Be enterprising'],
         correctAnswer: 0
     },
@@ -548,22 +548,22 @@ let quizQuestions =  [
         correctAnswer: 0
     },
     {
-        question: 'Q8: Which company uses CLOU? Hint: Media library',
+        question: 'Q8: Which company uses CLOU? \nHint: Media library',
         options: ['A: Haier', 'B: Morning Star', 'C: Netflix'],
         correctAnswer: 1
     },
     {
-        question: 'Q9: Name another one of the 3 handbooks we have published under Agile WoW Handbook series. Hint : What we offer',
+        question: 'Q9: Name another one of the 3 handbooks we have published under Agile WoW Handbook series. \nHint: What we offer',
         options: ['A: Digital Agenda', "B: A Beginner's Guide to Agile", 'C: Progressive Organisations'],
         correctAnswer: 2
     },
     {
-        question: 'Q10: What is one of the 8 trends of progressive organisations? Hint : What we offer',
+        question: 'Q10: What is one of the 8 trends of progressive organisations? \nHint: What we offer',
         options: ['A: Directive leadership', 'B: Profit Driven', 'C: Radical transparency'],
         correctAnswer: 2
     },
     {
-        question: 'Q11: Name one of the 3 handbooks we have published under Agile WoW Handbook series. Hint : What we offer',
+        question: 'Q11: Name one of the 3 handbooks we have published under Agile WoW Handbook series. \nHint: What we offer',
         options: ['A: Agile Heroes', 'B: Agile Leadership', 'C: Agile Ways'],
         correctAnswer: 0
     }

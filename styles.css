@@ -229,30 +229,54 @@ home
     z-index: 4000;
     position: absolute;
     left: 50%;
-    top: 71%;
+    top: 68%;
     transform: translate(-50%, -50%);
     background-color: white;
-    width: 300px;
-    height: 100px;
+    width: 50%; /* Adjusted to contain both sections */
+    height: auto; /* Adjusted to wrap content */
     border-radius: 20px;
-    padding: 5px;
+    padding: 0px;
     box-sizing: border-box;
     border: 2px solid #763f98;
+    display: flex; /* This will align children side by side */
+    justify-content: space-around; /* This adds space between the flex items */
+    align-items: flex-start;
 }
 
-#tutorial h3{
-    margin: 0;
-    font-size: 0.8em;
-    color: black;
+.tutorial-section {
+    flex: 1; /* Each section will take up equal space */
+    padding: 5px; /* Add some padding around content */
+    box-sizing: border-box;
 }
-#tutorial h5{
+
+.tutorial-section a {
+    color: #00a19c;
+    text-decoration: underline;
+}
+
+.tutorial-section a:hover {
+    text-decoration: underline; /* Optional: adds an underline on hover */
+}
+
+
+#tutorial h3{
     margin: 0;
     font-size: 0.7em;
     color: black;
 }
+#tutorial h5{
+    margin: 0;
+    font-size: 0.6em;
+    color: black;
+}
 
-#tutorial img{
+#tutorial #tuto2{
     width: 90px;
+    height: auto;
+}
+
+#tutorial #tuto1{
+    width: 150px;
     height: auto;
 }
 
@@ -340,10 +364,10 @@ home
     z-index: 2000;
     position: absolute;
     left: 50%;
-    top: 47%;
+    top: 44%;
     transform: translate(-50%, -50%);
     color: black;
-    font-size: 0.8em;
+    font-size: 0.6em;
     text-shadow:
             -1px -1px 0 #ffffff,
             1px -1px 0 #ffffff,

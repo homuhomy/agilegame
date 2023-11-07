@@ -224,6 +224,7 @@ home
     transform: scale(0.95); /* Button press effect */
 }
 
+
 #tutorial {
     z-index: 4000;
     position: absolute;
@@ -421,8 +422,8 @@ Guide
 
 #controls {
     color: #ffffff;
-    font-size: 13px;
-    line-height: 13px;
+    font-size: 20px;
+    line-height: 35px;
     margin: 10px;
     text-align: center;
 }

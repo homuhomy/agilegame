@@ -94,6 +94,8 @@ const characterSelection = document.getElementById("characterSelection");
 femaleCharacter.addEventListener('click', () => updateCharacter('female'));
 maleCharacter.addEventListener('click', () => updateCharacter('male'));
 
+maleCharacter.classList.add('glow');
+
 function updateCharacter(gender) {
     // Remove glow from all characters
     femaleCharacter.classList.remove('glow');
@@ -396,6 +398,7 @@ let map = genMap();
 function updateDisplay() {
     // Get references to the HTML elements
     const title = document.querySelector('#home #title-img');
+    const tutorial = document.querySelector('#home #tutorial');
     const charSelection = document.getElementById('character-selection');
     const gameOverText = document.getElementById('text');
 
@@ -403,6 +406,7 @@ function updateDisplay() {
     if (!inGame) {
         // Hide the title and character selection
         title.style.display = 'none';
+        tutorial.style.display = 'none';
         charSelection.style.display = 'none';
 
         // Show the game over text

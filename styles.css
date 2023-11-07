@@ -228,7 +228,7 @@ home
     z-index: 4000;
     position: absolute;
     left: 50%;
-    top: 75%;
+    top: 71%;
     transform: translate(-50%, -50%);
     background-color: white;
     width: 300px;
@@ -251,7 +251,7 @@ home
 }
 
 #tutorial img{
-    width: 100px;
+    width: 90px;
     height: auto;
 }
 
@@ -339,7 +339,7 @@ home
     z-index: 2000;
     position: absolute;
     left: 50%;
-    top: 50%;
+    top: 47%;
     transform: translate(-50%, -50%);
     color: black;
     font-size: 0.8em;

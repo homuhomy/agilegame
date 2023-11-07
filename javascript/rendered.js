@@ -585,10 +585,6 @@ let elapsedTime = currentTime - gameStartTime;
 
 let feedbackElement = document.getElementById('feedback');
 
-/*function removeLastSetOfFlags() {
-    upgradeItems = upgradeItems.filter((item) => !item.hit);
-}*/
-
 function removeLastSetOfFlags() {
     // Loop through each upgradeItem and remove its element from the DOM
     for (let item of upgradeItems) {
@@ -712,7 +708,7 @@ function update(step) {
         
         // Calculate the width based on the lane width, and cap it at 100
         let calculatedWidth = l.W;
-        let cappedWidth = Math.min(calculatedWidth, 100);  // This will ensure the width never exceeds 100
+        let cappedWidth = Math.min(calculatedWidth, 50);  // This will ensure the width never exceeds 100
         l.drawSprite(4000, item.element, {src: `images/flag${item.type}.png`, width: cappedWidth, height: 100}, item.lane);
     }
 

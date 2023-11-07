@@ -405,7 +405,7 @@ function updateDisplay() {
     // If the game is over
     if (!inGame) {
         // Hide the title and character selection
-        feedbackElement.style.display = 'none';
+        // feedbackElement.style.display = 'none';
         title.style.display = 'none';
         tutorial.style.display = 'none';
         charSelection.style.display = 'none';
@@ -731,6 +731,8 @@ function update(step) {
                 console.log('Correct Answer!');
 
                 feedbackElement.innerText = "+500";
+                feedbackElement.style.color = '#00a19c'
+                
                 setTimeout(() => {
                     feedbackElement.innerText = '';  // Clear the feedback text after 3 seconds
                 }, 1000);
@@ -740,6 +742,7 @@ function update(step) {
                 console.log('Wrong Answer!');
 
                 feedbackElement.innerText = "Incorrect";
+                feedbackElement.style.color = 'red'
                 setTimeout(() => {
                     feedbackElement.innerText = '';  // Clear the feedback text after 3 seconds
                 }, 1000);

@@ -258,7 +258,7 @@ home
 
 
 #links {
-    z-index: 8000;
+    z-index: 999999;
     position: absolute;
     left: 50%;
     top: 50%;

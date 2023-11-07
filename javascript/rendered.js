@@ -405,6 +405,7 @@ function updateDisplay() {
     // If the game is over
     if (!inGame) {
         // Hide the title and character selection
+        feedbackElement.style.display = 'none';
         title.style.display = 'none';
         tutorial.style.display = 'none';
         charSelection.style.display = 'none';

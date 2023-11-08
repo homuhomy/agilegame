@@ -576,7 +576,7 @@ let quizQuestions =  [
 // ------------------------------------------------------------
 
 let lastUpgradeTime = 0;
-const MIN_UPGRADE_INTERVAL = 5000;
+const MIN_UPGRADE_INTERVAL = 10000;
 
 // QUIZ
 // Create instances of UpgradeItem for each lane
@@ -675,7 +675,7 @@ function update(step) {
         (cloudOffset -= lines[startPos].curve * step * speed * 0.13) | 0
     }px 0`;*/
     
-    if (elapsedTime >= 10000 && currentTime - lastUpgradeTime >= MIN_UPGRADE_INTERVAL) {
+    if (elapsedTime >= 20000 && currentTime - lastUpgradeTime >= MIN_UPGRADE_INTERVAL) {
         // Reset the hit flag of all existing UpgradeItem instances
         for (let item of upgradeItems) {
             item.hit = false;
@@ -944,7 +944,7 @@ function resetGame() {
     // Reset other UI elements if necessary
     updateLivesDisplay();
     time.innerText = "000";
-    score.innerText = "00000000";
+    score.innerText = "00000";
 
     currentTime = timestamp();
     elapsedTime = currentTime - gameStartTime;

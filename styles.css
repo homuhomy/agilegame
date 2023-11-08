@@ -243,6 +243,10 @@ home
     align-items: flex-start;
 }
 
+.tutorial-section img{
+    border-radius: 10px;
+}
+
 .tutorial-section {
     flex: 1; /* Each section will take up equal space */
     padding: 5px; /* Add some padding around content */
@@ -276,10 +280,15 @@ home
 }
 
 #tutorial #tuto1{
-    width: 150px;
-    height: auto;
+    width: 90px;
+    height: 55px;
 }
 
+#tutorial #tuto3{
+    margin-top: 5px;
+    width: 150px;
+    height: 50px;
+}
 
 #links {
     z-index: 999999;

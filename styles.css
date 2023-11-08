@@ -236,6 +236,7 @@ home
     height: auto; /* Adjusted to wrap content */
     border-radius: 20px;
     padding: 0px;
+    padding-left: 5px;
     box-sizing: border-box;
     border: 2px solid #763f98;
     display: flex; /* This will align children side by side */
@@ -269,6 +270,8 @@ home
     color: black;
 }
 #tutorial h5{
+    font-family: 'MuseoSans', sans-serif;
+    font-weight: 300;
     margin: 0;
     font-size: 0.6em;
     color: black;

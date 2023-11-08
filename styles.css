@@ -201,7 +201,7 @@ home
     margin-top: 430px;
     align-items: center;
     padding: 10px 20px;
-    background-color: #763f98;
+    background: linear-gradient(to left, #763f98, #00a19c);
     border: none;
     border-radius: 15px; /* Rounded corners */
     font-size: 1em;

@@ -335,7 +335,7 @@ const decel = -40;
 const maxOffSpeed = 40;
 const offDecel = -70;
 const enemy_speed = 8;
-let item_speed = 2;
+let item_speed = 1;
 const hitSpeed = 20;
 
 const LANE = {
@@ -488,7 +488,7 @@ class Quiz {
         for (let i = 0; i < currentQuestion.options.length; i++) {
             let optionButton = document.createElement('div');
             optionButton.innerText = currentQuestion.options[i];
-            // optionButton.addEventListener('click', () => this.checkAnswer(i));
+            optionButton.addEventListener('click', () => this.checkAnswer(i));
             this.optionsBox.appendChild(optionButton);
         }
     }
@@ -576,7 +576,7 @@ let quizQuestions =  [
 // ------------------------------------------------------------
 
 let lastUpgradeTime = 0;
-const MIN_UPGRADE_INTERVAL = 10000;
+const MIN_UPGRADE_INTERVAL = 20000;
 
 // QUIZ
 // Create instances of UpgradeItem for each lane
@@ -675,7 +675,7 @@ function update(step) {
         (cloudOffset -= lines[startPos].curve * step * speed * 0.13) | 0
     }px 0`;*/
     
-    if (elapsedTime >= 20000 && currentTime - lastUpgradeTime >= MIN_UPGRADE_INTERVAL) {
+    if (elapsedTime >= 5000 && currentTime - lastUpgradeTime >= MIN_UPGRADE_INTERVAL) {
         // Reset the hit flag of all existing UpgradeItem instances
         for (let item of upgradeItems) {
             item.hit = false;
@@ -734,7 +734,7 @@ function update(step) {
                 feedbackElement.style.color = '#00a19c'
                 
                 setTimeout(() => {
-                    feedbackElement.innerText = '';  // Clear the feedback text after 3 seconds
+                    feedbackElement.innerText = '';  
                 }, 1000);
 
                 // Progress to the next question or level
@@ -744,12 +744,13 @@ function update(step) {
                 feedbackElement.innerText = "Incorrect";
                 feedbackElement.style.color = 'red'
                 setTimeout(() => {
-                    feedbackElement.innerText = '';  // Clear the feedback text after 3 seconds
+                    feedbackElement.innerText = '';  
                 }, 1000);
                 
                 loseLife();
             }
             if (quiz.areAllQuestionsAnswered()) {
+                removeLastSetOfFlags();
                 inGame = false;  // End the game
 
                 // Display the score
@@ -799,11 +800,6 @@ function update(step) {
         if (l.special)
             l.drawSprite(level, 0, l.special, l.special.offset || 0);
 
-        /*for (let car of cars)
-            if ((car.pos | 0) === n % N)
-                l.drawSprite(level, car.element, car.type, car.lane);*/
-
-        // update road
 
         if (l.Y >= maxy) continue;
         maxy = l.Y;

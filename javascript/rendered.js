@@ -42,7 +42,7 @@ const ASSETS = {
         },
 
         BUILDINGS: {
-            src: "images/buildings.png",
+            src: "images/buildings2.png",
         },
 
         KLCC: {

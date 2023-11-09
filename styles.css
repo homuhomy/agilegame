@@ -398,9 +398,9 @@ home
 }
 
 .glow {
-    filter: drop-shadow(0 0 5px #00a19c);
-}
-
+    filter: drop-shadow(0 0 5px rgba(0, 161, 156, 10));
+  }
+  
 #home #title-img {
     position: absolute;
     left: 50%;
@@ -502,4 +502,3 @@ Guide
     width: 50%;
     z-index: 5000;
 }
-

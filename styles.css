@@ -51,7 +51,7 @@ body {
     font-family: 'MuseoSans', sans-serif;
     font-weight: 900;
     height: 98vh;
-    background: url('images/test.png') no-repeat;
+    background: url('images/testcopy.png') no-repeat;
     background-size: 100% 100%;
 }
 
@@ -98,8 +98,8 @@ body {
 #lives {
     left: 75%;
     display: flex; /* Align items in a row */
-    width: 150px; /* Adjust width as needed */
-    height: 23px; /* Adjust height as needed */
+    width: 150px; 
+    height: 23px; 
 }
 
 #lives::before {
@@ -458,9 +458,9 @@ Guide
 
 #controls {
     color: #ffffff;
-    font-size: 20px;
-    line-height: 38px;
-    margin: 10px;
+    font-size: 22px;
+    line-height: 40px;
+    margin: 13px;
     text-align: center;
 }
 

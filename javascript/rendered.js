@@ -517,7 +517,7 @@ let quizQuestions =  [
         correctAnswer: 0
     },
     {
-        question: 'Q2: What are Agile Enterprise’s focus area. \nHint: About AE',
+        question: 'Q2: What is the other Agile Enterprise’s focus area. \nHint: About AE',
         options: ['A: Agile Capability', 'B: Strengthen Agile teams & Capability ', 'C: Sustainable development'],
         correctAnswer: 1
     },

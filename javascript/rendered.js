@@ -528,8 +528,8 @@ let quizQuestions =  [
     },
     {
         question: 'Q4: What is doing Agile? \nHint: Agile in PETRONAS',
-        options: ['A: Practice agile methodology ', 'B: Mindset and values', 'C: Project methodology'],
-        correctAnswer: 0
+        options: ['A: Mindset and values ', 'B: Practice agile methodology', 'C: Project methodology'],
+        correctAnswer: 1
     },
     {
         question: 'Q5: Name one of the four Agile values. \nHint: Agile in PETRONAS ',
@@ -538,8 +538,8 @@ let quizQuestions =  [
     },
     {
         question: 'Q6: What is one of the 12 Principles in Agile Manifesto?  \nHint: Agile in PETRONAS ',
-        options: ['A: Self-organizing teams', 'B: Focused collaboration', 'C: Be enterprising'],
-        correctAnswer: 0
+        options: ['A: Focused collaboration ', 'B: Self-organizing teams', 'C: Be enterprising'],
+        correctAnswer: 1
     },
     {
         question: 'Q7: How many Agile Adventures comic have we released so far?\n' +

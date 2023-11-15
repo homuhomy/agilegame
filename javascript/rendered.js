@@ -544,13 +544,13 @@ let quizQuestions =  [
     {
         question: 'Q7: How many Agile Adventures comic have we released so far?\n' +
             'Hint: Media library ',
-        options: ['A: 12', 'B: 14', 'C: 15'],
-        correctAnswer: 0
+        options: ['A: 15', 'B: 14', 'C: 12'],
+        correctAnswer: 2
     },
     {
         question: 'Q8: Which company uses CLOU? \nHint: Media library',
-        options: ['A: Haier', 'B: Morning Star', 'C: Netflix'],
-        correctAnswer: 1
+        options: ['A: Morning Star', 'B: Haier ', 'C: Netflix'],
+        correctAnswer: 0
     },
     {
         question: 'Q9: Name one of the 3 handbooks we have published under Agile WoW Handbook series. \nHint: What we offer',

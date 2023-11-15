@@ -373,6 +373,10 @@ home
     height: 80px;
 }
 
+#links #warning {
+    font-size: 0.5em;
+}
+
 
 #character-selection {
     z-index: 2000;

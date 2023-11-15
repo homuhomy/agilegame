@@ -553,7 +553,7 @@ let quizQuestions =  [
         correctAnswer: 1
     },
     {
-        question: 'Q9: Name another one of the 3 handbooks we have published under Agile WoW Handbook series. \nHint: What we offer',
+        question: 'Q9: Name one of the 3 handbooks we have published under Agile WoW Handbook series. \nHint: What we offer',
         options: ['A: Digital Agenda', "B: A Beginner's Guide to Agile", 'C: Progressive Organisations'],
         correctAnswer: 2
     },
@@ -563,7 +563,7 @@ let quizQuestions =  [
         correctAnswer: 2
     },
     {
-        question: 'Q11: Name one of the 3 handbooks we have published under Agile WoW Handbook series. \nHint: What we offer',
+        question: 'Q11: Name another one of the 3 handbooks we have published under Agile WoW Handbook series. \nHint: What we offer',
         options: ['A: Agile Heroes', 'B: Agile Leadership', 'C: Agile Ways'],
         correctAnswer: 0
     }
